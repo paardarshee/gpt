@@ -34,6 +34,11 @@ export default function ChatInput({
 		};
 		chatInput.setInput("");
 		chatInput.setAttachments([]);
+		console.log(
+			"Before streaming:",
+			useChatStore.getState().getMessages(chatId)
+		);
+
 		const aiText = await startStreaming(
 			aiMsgId,
 			chatInputSnapshot.input,
@@ -41,6 +46,11 @@ export default function ChatInput({
 			false,
 			chatInputSnapshot.attachments
 		);
+		console.log(
+			"After streaming:",
+			useChatStore.getState().getMessages(chatId)
+		);
+
 		setStreaming(false);
 		if (aiText) {
 			addMessage(chatId, {

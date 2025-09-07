@@ -101,8 +101,7 @@ export default function Connversations({
 		};
 
 		loadConversation();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [chatId, isRedirected, streaming]);
+	}, [chatId, isRedirected]);
 
 	const handleEditSend = async (index: number) => {
 		if (!editText.trim()) return;
