@@ -18,21 +18,20 @@ export default function ChatInput({
 
 	const handleSend = async () => {
 		if (!chatInput.input.trim()) return;
-		setStreaming(true);
 		const userMsgId = createUUID();
-		addMessage(chatId, {
-			role: "user",
-			msgId: userMsgId,
-			content: chatInput.input,
-			attachments: chatInput.attachments,
-		});
-
 		const chatInputText = chatInput.input;
 		const chatInputAttachments = chatInput.attachments;
 
 		// Clear input immediately for better UX
 		chatInput.clearInput();
 		chatInput.clearAttachments();
+		addMessage(chatId, {
+			role: "user",
+			msgId: userMsgId,
+			content: chatInput.input,
+			attachments: chatInput.attachments,
+		});
+		setStreaming(true);
 
 		const aiMsgId = createUUID();
 		const aiText = await startStreaming(
