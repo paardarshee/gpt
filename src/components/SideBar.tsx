@@ -122,16 +122,31 @@ const SideBarComponent = ({
 		>
 			{/* Header */}
 			<div className="flex items-center justify-between p-3 border-b border-gray-700">
-				{open && <Logo />}
-				{/* Collapse only for desktop */}
-				<div className="hidden sm:block">
-					<button
-						onClick={() => setOpen((prev) => !prev)}
-						className="p-1 rounded hover:bg-gray-700 group relative"
+				{open && (
+					<span className="text-lg font-semibold">
+						<Logo />
+					</span>
+				)}
+				<button
+					onClick={() => setOpen(!open)}
+					className="p-1 rounded hover:bg-gray-700 group relative"
+				>
+					{/* Logo (default) */}
+					{!open && (
+						<span className="block group-hover:hidden">
+							<Logo />
+						</span>
+					)}
+
+					{/* Menu (on hover) */}
+					<span
+						className={`${
+							!open ? "hidden" : "flex"
+						} group-hover:flex items-center justify-center`}
 					>
-						{open ? <Menu /> : <Logo />}
-					</button>
-				</div>
+						<Menu />
+					</span>
+				</button>
 			</div>
 
 			{/* New Chat */}
