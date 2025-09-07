@@ -1,13 +1,14 @@
 import { NextResponse, NextRequest } from "next/server";
 import { Message } from "@/lib/models/Message";
 import { Conversation } from "@/lib/models/Conversation";
+import { connectDB } from "@/lib/db";
 
 export async function GET(
 	req: NextRequest,
 	{ params }: { params: Promise<{ id: string }> }
 ) {
 	const { id: conversationUUID } = await params;
-
+	await connectDB();
 	const conversation = await Conversation.findOne({
 		conversationId: conversationUUID,
 	});

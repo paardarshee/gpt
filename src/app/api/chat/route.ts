@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 
 import { NextResponse, NextRequest } from "next/server";
 import { streamText, convertToModelMessages } from "ai";
-// import { Message as MessageType } from "mem0ai";
+import { connectDB } from "@/lib/db";
 import { getModel, MAX_TOKENS } from "@/lib/ai/provider";
 import { storeMessage, getContextForModel } from "@/lib/ai/memory";
 import { Conversation } from "@/lib/models/Conversation";
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 		}
 
 		let contextMessages: string = "";
-
+		await connectDB();
 		let conversation = await Conversation.findOne({
 			conversationId: conversationId,
 		});
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
 				conversationId: conversationId,
 			});
 		} else {
-			contextMessages = await getContextForModel(conversation._id.toString());
+			// contextMessages = await getContextForModel(conversation._id.toString());
 		}
 
 		const findOrCreate = async () => {
@@ -127,10 +127,10 @@ export async function POST(req: NextRequest) {
 			messages: convertToModelMessages(msgfromUI),
 			onFinish: async ({ text }) => {
 				// save assistant reply
-				await storeMessage(conversation._id.toString(), [
-					{ role: "user", content: message as string },
-					{ role: "assistant", content: text },
-				]);
+				// await storeMessage(conversation._id.toString(), [
+				// 	{ role: "user", content: message as string },
+				// 	{ role: "assistant", content: text },
+				// ]);
 				await Message.create({
 					msgId: `reply_to_${msgId}`,
 					conversationId: conversation._id,

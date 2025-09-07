@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { uploadToCloudinary } from "@/lib/uploads/cloudinary";
 import { Attachment } from "@/lib/models/Attachment";
+import { connectDB } from "@/lib/db";
 export async function POST(req: NextRequest) {
 	// your auth check here if required
 	try {
+		await connectDB();
 		const formData = await req.formData();
 		const files = formData.getAll("file") as File[];
 
