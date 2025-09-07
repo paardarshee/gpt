@@ -13,9 +13,11 @@ import { Conversation, useConversationStore } from "@/store/conversationStore";
 export default function Connversations({
 	chatId,
 	streaming,
+	setStreaming,
 }: {
 	chatId: string;
 	streaming: boolean;
+	setStreaming: (streaming: boolean) => void;
 }) {
 	const { streamingText, startStreaming } = useStreamingAI();
 	const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -52,6 +54,7 @@ export default function Connversations({
 				content: newChatInput.input,
 				attachments: newChatInput.attachments,
 			});
+			setStreaming(true);
 
 			(async () => {
 				const aiText = await startStreaming(
@@ -61,6 +64,7 @@ export default function Connversations({
 					false,
 					newChatInput.attachments
 				);
+				setStreaming(false);
 				if (aiText) {
 					addMessage(chatId, {
 						role: "assistant",
@@ -98,11 +102,11 @@ export default function Connversations({
 
 		loadConversation();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [chatId, isRedirected]);
+	}, [chatId, isRedirected, streaming]);
 
 	const handleEditSend = async (index: number) => {
 		if (!editText.trim()) return;
-
+		setStreaming(true);
 		const msgId = messages[index]?.msgId || "";
 		deleteMessagesAfterIndex(chatId, index - 1);
 		addMessage(chatId, { role: "user", content: editText });
@@ -114,6 +118,7 @@ export default function Connversations({
 		if (aiText) {
 			addMessage(chatId, { role: "assistant", content: aiText });
 		}
+		setStreaming(false);
 	};
 
 	return (
