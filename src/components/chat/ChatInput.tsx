@@ -19,36 +19,35 @@ export default function ChatInput({
 	const handleSend = async () => {
 		if (!chatInput.input.trim()) return;
 		const userMsgId = createUUID();
-		const chatInputText = chatInput.input;
-		const chatInputAttachments = chatInput.attachments;
-
-		// Clear input immediately for better UX
-		chatInput.clearInput();
-		chatInput.clearAttachments();
 		addMessage(chatId, {
 			role: "user",
 			msgId: userMsgId,
 			content: chatInput.input,
 			attachments: chatInput.attachments,
 		});
-		setStreaming(true);
 
 		const aiMsgId = createUUID();
+		setStreaming(true);
+		const chatInputSnapshot = {
+			input: chatInput.input,
+			attachments: [...chatInput.attachments],
+		};
+		chatInput.setInput("");
+		chatInput.setAttachments([]);
 		const aiText = await startStreaming(
 			aiMsgId,
-			chatInputText,
+			chatInputSnapshot.input,
 			chatId,
 			false,
-			chatInputAttachments
+			chatInputSnapshot.attachments
 		);
+		setStreaming(false);
 		if (aiText) {
 			addMessage(chatId, {
 				role: "assistant",
 				content: aiText,
-				attachments: chatInputAttachments,
 			});
 		}
-		setStreaming(false);
 	};
 
 	return (
