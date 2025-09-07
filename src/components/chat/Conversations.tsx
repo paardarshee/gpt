@@ -149,9 +149,7 @@ export default function Connversations({
 							Generating response ...
 						</div>
 					)}
-					{streamingText && (
-						<AssistantChat msg={streamingText} markdown={false} />
-					)}
+					{streamingText && <AssistantChat msg={streamingText} />}
 					<div ref={messagesEndRef} />
 				</div>
 			</div>
