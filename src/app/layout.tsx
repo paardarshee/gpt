@@ -17,13 +17,16 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	await connectDB();
 	return (
 		<html lang="en">
 			<body
-				className={`antialiased w-screen h-screen max-w-screen max-h-screen overflow-hidden gap-6 flex flex-row dark:bg-[#343541] font-[400]  text-md`}
+				className={`antialiased w-screen h-screen max-w-screen max-h-screen overflow-hidden flex sm:flex-row dark:bg-[#343541] font-[400] text-md flex-col `}
 			>
 				<Sidebar />
-				<div className="flex-1">{children}</div>
+				<div className="flex-1 h-[calc(100vh-64px)] sm:h-screen">
+					{children}
+				</div>
 			</body>
 		</html>
 	);

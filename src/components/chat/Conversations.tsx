@@ -8,8 +8,15 @@ import { useShallow } from "zustand/react/shallow";
 import UserChat from "@/components/chat/UserChat";
 import AssistantChat from "@/components/chat/AssistantChat";
 import EditMessage from "./EditMEssage";
+import { Conversation, useConversationStore } from "@/store/conversationStore";
 
-export default function Connversations({ chatId }: { chatId: string }) {
+export default function Connversations({
+	chatId,
+	streaming,
+}: {
+	chatId: string;
+	streaming: boolean;
+}) {
 	const { streamingText, startStreaming } = useStreamingAI();
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -25,6 +32,8 @@ export default function Connversations({ chatId }: { chatId: string }) {
 	const messages = useChatStore(
 		useShallow((s) => s.conversations[chatId] || [])
 	);
+
+	const addConversation = useConversationStore((s) => s.addConversation);
 
 	// Scroll to bottom
 	useEffect(() => {
@@ -59,6 +68,16 @@ export default function Connversations({ chatId }: { chatId: string }) {
 						attachments: newChatInput.attachments,
 					});
 				}
+				const conversation = await fetch(
+					`/api/conversations/${chatId}/metadata`
+				);
+				const convoData: Conversation = await conversation.json();
+
+				addConversation({
+					userId: convoData.userId,
+					title: convoData.title,
+					conversationId: chatId,
+				});
 			})();
 
 			setRedirected(false);
@@ -98,8 +117,9 @@ export default function Connversations({ chatId }: { chatId: string }) {
 	};
 
 	return (
-		<div className="flex-1 overflow-y-auto">
-			<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+		<div className="flex-1 overflow-y-auto [scrollbar-gutter:stable] ">
+			{/* <div className="lg:max-w-3xl md:max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 bg-red-800 w-full"> */}
+			<div className="lg:max-w-3xl md:max-w-2xl mx-auto pl-4 pr-[7px] sm:pl-6 sm:pr-[16px] md:pl-7 md:pr-[21px] lg:pl-9 lg:pr-[31px]  py-4 w-full">
 				<div className="flex flex-col gap-6">
 					{messages.map((m, i) => (
 						<div key={i} className="flex items-start gap-4 leading-relaxed">
@@ -118,13 +138,20 @@ export default function Connversations({ chatId }: { chatId: string }) {
 											setEditingIndex(i);
 											setEditText(m.content);
 										}}
+										attachments={m.attachments || []}
 									/>
 								))}
 							{m.role === "assistant" && <AssistantChat msg={m.content} />}
 						</div>
 					))}
-
-					{streamingText && <AssistantChat msg={streamingText} />}
+					{streaming && !streamingText && (
+						<div className="animate-pulse text-gray-300">
+							Generating response ...
+						</div>
+					)}
+					{streamingText && (
+						<AssistantChat msg={streamingText} markdown={false} />
+					)}
 					<div ref={messagesEndRef} />
 				</div>
 			</div>

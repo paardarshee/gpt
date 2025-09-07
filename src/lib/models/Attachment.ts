@@ -5,7 +5,7 @@ const AttachmentSchema = new Schema(
 	{
 		url: { type: String, required: true },
 		filename: { type: String, required: true },
-		mimeType: { type: String, required: true },
+		fileType: { type: String, enum: ["image", "document"], required: true },
 		size: { type: Number, required: true },
 	},
 	{ timestamps: true }

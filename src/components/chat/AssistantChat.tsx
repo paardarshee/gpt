@@ -1,11 +1,16 @@
 "use client";
 import { Copy, Tick } from "../SVG";
 import { useState } from "react";
+import Markdown from "react-markdown";
 type AssistantChatProps = {
 	msg: string;
+	markdown?: boolean;
 };
 
-export default function AssistantChat({ msg }: AssistantChatProps) {
+export default function AssistantChat({
+	msg,
+	markdown = true,
+}: AssistantChatProps) {
 	const [copied, setCopied] = useState(false);
 
 	const handleCopy = async () => {
@@ -21,8 +26,8 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
 		<div className="flex w-full flex-col group">
 			{/* Chat bubble */}
 			<div className="flex ">
-				<div className="relative rounded-2xl px-4 py-2.5 text-gray-100 whitespace-pre-wrap break-words">
-					{msg}
+				<div className="relative rounded-2xl py-2.5 text-gray-100 whitespace-pre-wrap break-words">
+					{markdown ? <Markdown>{msg}</Markdown> : <>{msg}</>}
 				</div>
 			</div>
 

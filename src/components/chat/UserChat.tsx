@@ -1,12 +1,19 @@
 "use client";
+import { Attachment } from "@/store/chatStore";
 import { Copy, Edit, Tick } from "../SVG";
 import { useState } from "react";
+import Attachments from "@/components/Attachments";
 type UserChatProps = {
 	msg: string;
 	onEditClick: () => void;
+	attachments: Attachment[];
 };
 
-export default function UserChat({ msg, onEditClick }: UserChatProps) {
+export default function UserChat({
+	msg,
+	onEditClick,
+	attachments,
+}: UserChatProps) {
 	const [copied, setCopied] = useState(false);
 
 	const handleCopy = async () => {
@@ -22,6 +29,9 @@ export default function UserChat({ msg, onEditClick }: UserChatProps) {
 		<div className="flex w-full flex-col group">
 			{/* Chat bubble */}
 			<div className="flex justify-end w-full">
+				<Attachments attachments={attachments || []} />
+			</div>
+			<div className="flex justify-end w-full">
 				<div className="relative max-w-[70%] rounded-2xl px-4 py-2.5 bg-[rgba(50,50,50,0.85)] text-gray-100 whitespace-pre-wrap break-words">
 					{msg}
 				</div>
@@ -36,13 +46,15 @@ export default function UserChat({ msg, onEditClick }: UserChatProps) {
 				>
 					{copied ? <Tick /> : <Copy />}
 				</button>
-				<button
-					className="p-1.5 rounded-lg hover:bg-[rgba(50,50,50,0.6)] cursor-pointer"
-					title="Edit"
-					onClick={onEditClick}
-				>
-					<Edit />
-				</button>
+				{!(attachments.length > 0) && (
+					<button
+						className="p-1.5 rounded-lg hover:bg-[rgba(50,50,50,0.6)] cursor-pointer"
+						title="Edit"
+						onClick={onEditClick}
+					>
+						<Edit />
+					</button>
+				)}
 			</div>
 		</div>
 	);

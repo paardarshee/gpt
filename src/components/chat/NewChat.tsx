@@ -2,14 +2,14 @@
 import DynamicTextArea from "./DynamicTextArea";
 import { useState, ChangeEvent, KeyboardEventHandler, useRef } from "react";
 import { Plus, UpArrow } from "../SVG";
-import { Attachment } from "@/store/chatStore";
-
+import { Attachment as AttachmentType } from "@/store/chatStore";
+import Attachments from "@/components/Attachments";
 type NewChatProps = {
 	value: string;
 	onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 	handleSubmit: () => Promise<void>;
-	attachments: Attachment[];
-	setAttachments: (attachments: Attachment[]) => void;
+	attachments: AttachmentType[];
+	setAttachments: (attachments: AttachmentType[]) => void;
 };
 
 export default function NewChat({
@@ -21,6 +21,7 @@ export default function NewChat({
 }: NewChatProps) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [isMultiline, setIsMultiline] = useState(false);
+	const [disabled, setDisabled] = useState(false);
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		onChange(e);
@@ -30,7 +31,8 @@ export default function NewChat({
 	const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
 		if (e.key === "Enter" && !e.shiftKey) {
 			e.preventDefault();
-			handleSubmit();
+			if (disabled) return;
+			handleSubmit().finally(() => setDisabled(false));
 		}
 	};
 
@@ -41,23 +43,29 @@ export default function NewChat({
 	const handleFileChange = async (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
+		event.preventDefault();
 		const files = event.target.files;
 		if (!files) return;
 
 		const validFiles: File[] = [];
 		const maxSize = 5 * 1024 * 1024; // 5MB
 		const allowedTypes = [
-			"image/png",
-			"image/jpeg",
-			"image/jpg",
-			"application/pdf",
+			"application/pdf", // PDF
 			"application/msword", // .doc
 			"application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
-			"text/plain",
+			"application/vnd.ms-excel", // .xls
+			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+			"application/vnd.ms-powerpoint", // .ppt
+			"application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
+			"text/plain", // .txt
+			"text/csv", // .csv
 		];
 
 		for (const file of files) {
-			if (!allowedTypes.includes(file.type)) {
+			if (
+				!allowedTypes.includes(file.type) &&
+				!file.type.startsWith("image/")
+			) {
 				alert(`File type not allowed: ${file.name}`);
 				continue;
 			}
@@ -67,6 +75,8 @@ export default function NewChat({
 			}
 			validFiles.push(file);
 		}
+
+		console.log("logged");
 
 		if (validFiles.length > 0) {
 			const formData = new FormData();
@@ -79,7 +89,7 @@ export default function NewChat({
 				body: formData,
 			});
 			const data: {
-				attachments: Attachment[];
+				attachments: AttachmentType[];
 			} = await res.json();
 			setAttachments([...attachments, ...data.attachments]);
 		}
@@ -89,10 +99,18 @@ export default function NewChat({
 	};
 
 	return (
-		<div className="w-full max-w-3xl mx-auto">
+		<div className="w-full max-w-3xl mx-auto ">
 			<div
-				className={`relative flex w-full bg-[#343537] rounded-[18px] p-2.5 transition-all duration-300 flex-col `}
+				className={`relative flex w-full bg-[#343537] rounded-4xl p-2.5 transition-all duration-300 flex-col `}
 			>
+				{attachments.length > 0 && (
+					<Attachments
+						attachments={attachments}
+						setAttachments={setAttachments}
+						isEditable={true}
+					/>
+				)}
+				{/* Textarea for multiline input */}
 				{isMultiline && (
 					<div className={`w-full`}>
 						<DynamicTextArea
@@ -111,7 +129,7 @@ export default function NewChat({
 							className="hidden"
 							onChange={handleFileChange}
 							multiple
-							accept=".png,.jpg,.jpeg,.pdf,.doc,.docx,.txt"
+							accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain,text/csv"
 						/>
 						<button
 							className="p-2 mr-2 text-white rounded-full hover:bg-gray-500 focus:outline-none cursor-pointer"
@@ -143,8 +161,12 @@ export default function NewChat({
 						{/* Right Submit Button */}
 						<button
 							type="button"
-							onClick={handleSubmit}
-							disabled={!value.trim()}
+							onClick={() => {
+								if (disabled) return;
+								setDisabled(true);
+								handleSubmit().finally(() => setDisabled(false));
+							}}
+							disabled={!value.trim() || disabled}
 							className="flex items-center justify-center w-10 h-10 rounded-full disabled:bg-[#8a8585] bg-white transition-colors text-gray-800 cursor-pointer disabled:cursor-default"
 						>
 							<UpArrow />
