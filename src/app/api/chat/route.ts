@@ -17,8 +17,6 @@ interface ChatRequestBody {
 	message: string;
 	conversationId: string;
 	attachments?: string[];
-	// conversationId?: string;
-	// userId?: string; // In a real app, get this from auth
 }
 
 export async function POST(req: NextRequest) {
@@ -62,7 +60,9 @@ export async function POST(req: NextRequest) {
 				conversationId: conversationId,
 			});
 		} else {
-			// contextMessages = await getContextForModel(conversation._id.toString());
+			if (process.env.NODE_ENV === "production") {
+				contextMessages = await getContextForModel(conversation._id.toString());
+			}
 		}
 
 		const findOrCreate = async () => {
@@ -127,10 +127,12 @@ export async function POST(req: NextRequest) {
 			messages: convertToModelMessages(msgfromUI),
 			onFinish: async ({ text }) => {
 				// save assistant reply
-				// await storeMessage(conversation._id.toString(), [
-				// 	{ role: "user", content: message as string },
-				// 	{ role: "assistant", content: text },
-				// ]);
+				if (process.env.NODE_ENV === "production") {
+					await storeMessage(conversation._id.toString(), [
+						{ role: "user", content: message as string },
+						{ role: "assistant", content: text },
+					]);
+				}
 				await Message.create({
 					msgId: `reply_to_${msgId}`,
 					conversationId: conversation._id,
