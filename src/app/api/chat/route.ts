@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
 				conversationId: conversationId,
 			});
 		} else {
-			// contextMessages = await getContextForModel(conversation._id.toString());
+			contextMessages = await getContextForModel(conversation._id.toString());
 		}
 
 		const findOrCreate = async () => {
@@ -127,10 +127,10 @@ export async function POST(req: NextRequest) {
 			messages: convertToModelMessages(msgfromUI),
 			onFinish: async ({ text }) => {
 				// save assistant reply
-				// await storeMessage(conversation._id.toString(), [
-				// 	{ role: "user", content: message as string },
-				// 	{ role: "assistant", content: text },
-				// ]);
+				await storeMessage(conversation._id.toString(), [
+					{ role: "user", content: message as string },
+					{ role: "assistant", content: text },
+				]);
 				await Message.create({
 					msgId: `reply_to_${msgId}`,
 					conversationId: conversation._id,
