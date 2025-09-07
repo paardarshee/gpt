@@ -7,11 +7,9 @@ import NewChat from "./NewChat";
 
 export default function ChatInput({
 	chatId,
-	streaming,
 	setStreaming,
 }: {
 	chatId: string;
-	streaming: boolean;
 	setStreaming: (streaming: boolean) => void;
 }) {
 	const { startStreaming } = useStreamingAI();

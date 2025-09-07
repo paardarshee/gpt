@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { uploadToCloudinary } from "@/lib/uploads/cloudinary";
 import { Attachment } from "@/lib/models/Attachment";
 import { connectDB } from "@/lib/db";
-import { UploadApiResponse } from "cloudinary";
 
 export async function POST(req: NextRequest) {
 	try {

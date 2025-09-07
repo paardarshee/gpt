@@ -14,11 +14,7 @@ export default function ChatPage({ params }: ChatProps) {
 	return (
 		<div className="flex flex-col bg-white dark:bg-[#343541] text-gray-900 dark:text-gray-100 relative h-full">
 			<Conversations chatId={chat_id} streaming={streaming} />
-			<ChatInput
-				chatId={chat_id}
-				streaming={streaming}
-				setStreaming={setStreaming}
-			/>
+			<ChatInput chatId={chat_id} setStreaming={setStreaming} />
 		</div>
 	);
 }

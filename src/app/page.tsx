@@ -36,8 +36,12 @@ export default function NewChatPage() {
 	return (
 		<div className="flex flex-col bg-white dark:bg-[#343541] text-gray-900 dark:text-gray-100 relative h-full">
 			{/* Input */}
+
 			<div className="w-full border-t border-gray-200 dark:border-gray-700 px-4 py-4 flex-1 flex items-center justify-center">
 				<div className="max-w-3xl mx-auto w-full">
+					<div className="text-white w-full mx-auto p-2 text-4xl flex justify-center">
+						Ready when You Are!
+					</div>
 					<div className="relative flex items-center">
 						<NewChat
 							value={chatInput.input}
