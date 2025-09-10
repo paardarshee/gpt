@@ -5,80 +5,91 @@ import { useChatInputStore } from "@/store/chatInputStore";
 import { useChatStore } from "@/store/chatStore";
 import NewChat from "./NewChat";
 
-export default function ChatInput({
-	chatId,
-	setStreaming,
-}: {
-	chatId: string;
-	setStreaming: (streaming: boolean) => void;
-}) {
-	const { startStreaming } = useStreamingAI();
-	const chatInput = useChatInputStore();
-	const addMessage = useChatStore((s) => s.addMessage);
+type ChatInputProps = {
+  chatId: string; // Unique identifier for the chat session
+  setStreaming: (streaming: boolean) => void; // Function to update streaming state
+};
+/**
+ * Chat input component: handles sending user messages, starting streaming, and rendering input UI.
+ * @param chatId - Unique identifier for the chat session
+ * @param setStreaming - Function to update streaming state
+ */
+export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
+  const { startStreaming } = useStreamingAI();
+  const chatInput = useChatInputStore();
+  const addMessage = useChatStore((s) => s.addMessage);
 
-	const handleSend = async () => {
-		if (!chatInput.input.trim()) return;
-		const userMsgId = createUUID();
-		addMessage(chatId, {
-			role: "user",
-			msgId: userMsgId,
-			content: chatInput.input,
-			attachments: chatInput.attachments,
-		});
+  /**
+   * Handles sending a user message:
+   * 1. Adds user message to store
+   * 2. Clears input and attachments
+   * 3. Starts AI streaming
+   * 4. Appends assistant's response when streaming completes
+   *
+   * @returns  Resolves when message handling and streaming are complete
+   */
+  const handleSend = async () => {
+    if (!chatInput.input.trim()) return;
+    const userMsgId = createUUID();
+    addMessage(chatId, {
+      role: "user",
+      msgId: userMsgId,
+      content: chatInput.input,
+      attachments: chatInput.attachments,
+    });
 
-		const aiMsgId = createUUID();
-		setStreaming(true);
-		const chatInputSnapshot = {
-			input: chatInput.input,
-			attachments: [...chatInput.attachments],
-		};
-		chatInput.setInput("");
-		chatInput.setAttachments([]);
-		console.log(
-			"Before streaming:",
-			useChatStore.getState().getMessages(chatId)
-		);
+    setStreaming(true);
+    const chatInputSnapshot = {
+      input: chatInput.input,
+      attachments: [...chatInput.attachments],
+    };
+    chatInput.setInput("");
+    chatInput.setAttachments([]);
+    console.log(
+      "Before streaming:",
+      useChatStore.getState().getMessages(chatId),
+    );
 
-		const aiText = await startStreaming(
-			aiMsgId,
-			chatInputSnapshot.input,
-			chatId,
-			false,
-			chatInputSnapshot.attachments
-		);
-		console.log(
-			"After streaming:",
-			useChatStore.getState().getMessages(chatId)
-		);
+    const aiText = await startStreaming(
+      userMsgId,
+      chatInputSnapshot.input,
+      chatId,
+      false,
+      chatInputSnapshot.attachments,
+    );
+    console.log(
+      "After streaming:",
+      useChatStore.getState().getMessages(chatId),
+    );
 
-		setStreaming(false);
-		if (aiText) {
-			addMessage(chatId, {
-				role: "assistant",
-				content: aiText,
-			});
-		}
-	};
+    setStreaming(false);
+    if (aiText) {
+      addMessage(chatId, {
+        role: "assistant",
+        content: aiText,
+      });
+    }
+  };
 
-	return (
-		<div className="relative -top-7 w-full bottom-0 border-gray-200 dark:border-gray-700">
-			{/* Gradient overlay */}
-			<div className="absolute -top-8 w-full h-15 bg-gradient-to-b from-transparent to-[#343541]"></div>
+  return (
+    <div className="relative -top-7 bottom-0 w-full border-gray-200 dark:border-gray-700">
+      {/* Gradient overlay */}
+      <div className="absolute -top-8 h-15 w-full bg-gradient-to-b from-transparent to-[#343541]"></div>
 
-			<div className="lg:max-w-3xl md:max-w-2xl mx-auto relative flex items-center px-4 sm:px-6 lg:px-8">
-				<NewChat
-					value={chatInput.input}
-					onChange={(e) => chatInput.setInput(e.target.value)}
-					handleSubmit={handleSend}
-					setAttachments={chatInput.setAttachments}
-					attachments={chatInput.attachments}
-				/>
-			</div>
-			<div className="absolute -bottom-6 w-full ">
-				<p className="text-xs text-center text-gray-500 dark:text-gray-400">
-					CloneGPT can make mistakes. Consider checking important information.
-				</p>
-			</div>
-		</div>
-	);
+      <div className="relative mx-auto flex items-center bg-red-800 px-4 sm:px-6 md:max-w-2xl lg:max-w-3xl lg:px-8">
+        <NewChat
+          value={chatInput.input}
+          onChange={(e) => chatInput.setInput(e.target.value)}
+          handleSubmit={handleSend}
+          setAttachments={chatInput.setAttachments}
+          attachments={chatInput.attachments}
+        />
+      </div>
+      <div className="absolute -bottom-6 w-full">
+        <p className="text-center text-xs text-gray-500 dark:text-gray-400">
+          CloneGPT can make mistakes. Consider checking important information.
+        </p>
+      </div>
+    </div>
+  );
 }

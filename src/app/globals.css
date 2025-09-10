@@ -1,28 +1,102 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans:
+    ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica,
+    "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
 @layer base {
-	/* Firefox */
-	* {
-		scrollbar-width: thin;
-		scrollbar-color: #6b7280 transparent; /* thumb + transparent track */
-	}
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #6b7280 transparent; /* thumb + transparent track */
+  }
 
-	/* WebKit (Chrome, Edge, Safari) */
-	*::-webkit-scrollbar {
-		width: 6px;
-		height: 6px;
-	}
+  /* WebKit (Chrome, Edge, Safari) */
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 
-	*::-webkit-scrollbar-track {
-		background: transparent; /* fully transparent track */
-	}
+  *::-webkit-scrollbar-track {
+    background: transparent; /* fully transparent track */
+  }
 
-	*::-webkit-scrollbar-thumb {
-		background-color: #6b7280; /* Tailwind gray-500 */
-		border-radius: 9999px;
-	}
+  *::-webkit-scrollbar-thumb {
+    background-color: #6b7280; /* Tailwind gray-500 */
+    border-radius: 9999px;
+  }
 
-	*::-webkit-scrollbar-thumb:hover {
-		background-color: #9ca3af; /* Tailwind gray-400 */
-	}
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af; /* Tailwind gray-400 */
+  }
+}
+
+:root {
+  --bg-primary: #fff;
+  --bg-primary-inverted: #000;
+  --bg-secondary: #e8e8e8;
+  --bg-tertiary: #f3f3f3;
+  --bg-scrim: #0d0d0d80;
+  --bg-elevated-primary: #fff;
+  --bg-elevated-secondary: #f9f9f9;
+  --bg-status-warning: #fff5f0;
+  --bg-status-error: #fff0f0;
+  --border-default: #0d0d0d1a;
+  --border-heavy: #0d0d0d26;
+  --border-light: #0d0d0d0d;
+  --border-status-warning: #ffe7d9;
+  --border-status-error: #ffe1e0;
+  --text-primary: #0d0d0d;
+  --text-secondary: #5d5d5d;
+  --text-tertiary: #8f8f8f;
+  --text-inverted: #fff;
+  --text-inverted-static: #fff;
+  --text-accent: #66b5ff;
+  --text-status-warning: #e25507;
+  --text-status-error: #e02e2a;
+  --icon-primary: #0d0d0d;
+  --icon-secondary: #5d5d5d;
+  --icon-tertiary: #8f8f8f;
+  --icon-inverted: #fff;
+  --icon-inverted-static: #fff;
+  --icon-accent: #0285ff;
+  --icon-status-warning: #e25507;
+  --icon-status-error: #e02e2a;
+  /* …and so on for the rest */
+}
+
+.dark {
+  --bg-primary: #212121;
+  --bg-primary-inverted: #fff;
+  --bg-secondary: #303030;
+  --bg-tertiary: #414141;
+  --bg-scrim: #0d0d0d80;
+  --bg-elevated-primary: #303030;
+  --bg-elevated-secondary: #181818;
+  --bg-status-warning: #4a2206;
+  --bg-status-error: #4d100e;
+  --border-default: #ffffff26;
+  --border-heavy: #fff3;
+  --border-light: #ffffff0d;
+  --border-status-warning: #4a2206;
+  --border-status-error: #4d100e;
+  --text-primary: #fff;
+  --text-secondary: #f3f3f3;
+  --text-tertiary: #afafaf;
+  --text-inverted: #0d0d0d;
+  --text-inverted-static: #fff;
+  --text-accent: #66b5ff;
+  --text-status-warning: #ff9e6c;
+  --text-status-error: #ff8583;
+  --icon-primary: #e8e8e8;
+  --icon-secondary: #cdcdcd;
+  --icon-tertiary: #afafaf;
+  --icon-inverted: #0d0d0d;
+  --icon-inverted-static: #fff;
+  --icon-accent: #66b5ff;
+  --icon-status-warning: #ff9e6c;
+  --icon-status-error: #ff8583;
+  /* …and so on for the rest */
 }

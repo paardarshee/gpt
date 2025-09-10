@@ -7,182 +7,187 @@ import { useConversationStore, Conversation } from "@/store/conversationStore";
 import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
-	const [open, setOpen] = useState(false); // default closed on mobile
-	const { conversations, setConversations } = useConversationStore();
-	const pathname = usePathname();
+  const [open, setOpen] = useState(false); // default closed on mobile
+  const { conversations, setConversations } = useConversationStore();
+  const pathname = usePathname();
 
-	useEffect(() => {
-		const fetchConversations = async () => {
-			try {
-				const response = await fetch("/api/conversations");
-				if (!response.ok) throw new Error("Failed to fetch conversations");
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        const response = await fetch("/api/conversations");
+        if (!response.ok) throw new Error("Failed to fetch conversations");
 
-				const data: { conversations: Conversation[] } = await response.json();
-				setConversations(data.conversations);
-			} catch (error) {
-				console.error(error);
-			}
-		};
+        const data: { conversations: Conversation[] } = await response.json();
+        setConversations(data.conversations);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-		fetchConversations();
-	}, [setConversations]);
+    fetchConversations();
+  }, [setConversations]);
 
-	// ✅ safer parsing
-	const activeConversationId = pathname.startsWith("/chats/")
-		? pathname.split("/chats/")[1]?.split("/")[0]
-		: null;
+  // ✅ safer parsing
+  const activeConversationId = pathname.startsWith("/chats/")
+    ? pathname.split("/chats/")[1]?.split("/")[0]
+    : null;
 
-	return (
-		<div>
-			{/* Mobile Top Bar */}
-			<div className="sm:hidden flex items-center justify-between px-3 py-2 text-white border-b border-gray-700">
-				{/* Hamburger */}
-				<button
-					onClick={() => setOpen(true)}
-					className="p-2 rounded-md hover:bg-gray-700 focus:outline-none"
-				>
-					<HamBurgerMenu />
-				</button>
+  return (
+    <div className="flex items-center">
+      {/* Mobile Top Bar */}
+      <div className="flex w-screen items-center justify-between px-3 py-2 text-white md:hidden">
+        {/* Hamburger */}
+        <button
+          onClick={() => setOpen(true)}
+          className="rounded-md p-2 hover:bg-gray-700 focus:outline-none"
+        >
+          <HamBurgerMenu className="h-6 w-6" />
+        </button>
 
-				{/* New Chat */}
-				<Link
-					href="/"
-					className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-600"
-				>
-					<Create />
-				</Link>
-			</div>
+        {/* New Chat */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-600"
+        >
+          <Create className="h-5 w-5" />
+        </Link>
+      </div>
 
-			{/* Mobile Drawer */}
-			<div className="sm:hidden">
-				{/* Backdrop */}
-				{open && (
-					<div
-						className="fixed inset-0 bg-gray-700/20 bg-opacity-50 z-40"
-						onClick={() => setOpen(false)}
-					/>
-				)}
+      {/* Mobile Drawer */}
+      <div className="md:hidden">
+        {/* Backdrop */}
+        {open && (
+          <div
+            className="bg-opacity-50 fixed inset-0 z-40 bg-gray-700/20"
+            onClick={() => setOpen(false)}
+          />
+        )}
 
-				{/* Sliding Sidebar */}
-				<div
-					className={`fixed top-0 left-0 h-screen z-50 transform transition-transform duration-300 ease-in-out ${
-						open ? "translate-x-0" : "-translate-x-full"
-					}`}
-				>
-					{/* Close Button */}
-					<button
-						onClick={() => setOpen(false)}
-						className="absolute top-3 right-3 z-60 rounded-full bg-gray-700 p-1 shadow-sm hover:bg-gray-600"
-					>
-						<div className="rotate-45 w-4 h-4 flex items-center justify-center text-white">
-							<Plus />
-						</div>
-					</button>
+        {/* Sliding Sidebar */}
+        <div
+          className={`fixed top-0 left-0 z-50 h-screen transform transition-transform duration-300 ease-in-out ${
+            open ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setOpen(false)}
+            className="absolute top-3 right-3 z-60 rounded-full bg-gray-700 p-1 shadow-sm hover:bg-gray-600"
+          >
+            <div className="flex h-4 w-4 rotate-45 items-center justify-center text-white">
+              <Plus className="h-5 w-5" />
+            </div>
+          </button>
 
-					<SideBarComponent
-						conversations={conversations}
-						activeConversationId={activeConversationId}
-						open={true} // always expanded on mobile drawer
-						setOpen={setOpen}
-					/>
-				</div>
-			</div>
+          <SideBarComponent
+            conversations={conversations}
+            activeConversationId={activeConversationId}
+            open={true} // always expanded on mobile drawer
+            setOpen={setOpen}
+          />
+        </div>
+      </div>
 
-			{/* Desktop Sidebar */}
-			<div className="hidden sm:block">
-				<SideBarComponent
-					conversations={conversations}
-					activeConversationId={activeConversationId}
-					open={open}
-					setOpen={setOpen}
-				/>
-			</div>
-		</div>
-	);
+      {/* Desktop Sidebar */}
+      <div className="hidden md:flex">
+        <SideBarComponent
+          conversations={conversations}
+          activeConversationId={activeConversationId}
+          open={open}
+          setOpen={setOpen}
+        />
+      </div>
+    </div>
+  );
 }
 
 type SideBarProps = {
-	conversations: Conversation[];
-	activeConversationId: string | null;
-	open: boolean;
-	setOpen: Dispatch<SetStateAction<boolean>>;
+  conversations: Conversation[];
+  activeConversationId: string | null;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const SideBarComponent = ({
-	conversations,
-	activeConversationId,
-	open,
-	setOpen,
+  conversations,
+  activeConversationId,
+  open,
+  setOpen,
 }: SideBarProps) => {
-	return (
-		<div
-			className={`${
-				open ? "w-64" : "w-16"
-			} bg-[#202123] text-white flex flex-col transition-all duration-300 text-md h-screen`}
-		>
-			{/* Header */}
-			<div className="flex items-center justify-between p-3 border-b border-gray-700">
-				{open && (
-					<span className="text-lg font-semibold">
-						<Logo />
-					</span>
-				)}
-				<button
-					onClick={() => setOpen(!open)}
-					className="p-1 rounded hover:bg-gray-700 group relative"
-				>
-					{/* Logo (default) */}
-					{!open && (
-						<span className="block group-hover:hidden">
-							<Logo />
-						</span>
-					)}
+  return (
+    <div
+      className={`${
+        open ? "w-60" : "w-14"
+      } text-md flex h-screen flex-col bg-[#202123] text-white`}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-3 py-2">
+        {open && (
+          <span className="text-lg font-semibold">
+            <Logo className="h-6 w-6" />
+          </span>
+        )}
+        <button
+          onClick={() => setOpen(!open)}
+          className="group relative rounded bg-red-900 p-1 hover:bg-gray-700"
+        >
+          {/* Logo (default) */}
+          {!open && (
+            <span className="flex items-center justify-center group-hover:hidden">
+              <Logo className="h-6 w-6" />
+            </span>
+          )}
 
-					{/* Menu (on hover) */}
-					<span
-						className={`${
-							!open ? "hidden" : "flex"
-						} group-hover:flex items-center justify-center`}
-					>
-						<Menu />
-					</span>
-				</button>
-			</div>
+          {/* Menu (on hover) */}
+          <span
+            className={`${
+              !open ? "hidden" : "flex"
+            } items-center justify-center group-hover:flex`}
+          >
+            <Menu className="h-6 w-6" />
+          </span>
+        </button>
+      </div>
+      {/* New Chat */}
+      <div className="flex items-center justify-between p-3">
+        <button
+          onClick={() => setOpen(!open)}
+          className="group relative w-full rounded p-1 hover:bg-gray-700"
+        >
+          <Link href="/">
+            <div className="flex items-center gap-2">
+              <Create className="h-5 w-5" />
+              {open && <span>New Chat</span>}
+            </div>
+          </Link>
+        </button>
+      </div>
 
-			{/* New Chat */}
-			<Link
-				href="/"
-				className="flex items-center gap-2 p-3 m-2 rounded-lg hover:bg-gray-600"
-			>
-				<Create />
-				{open && <span>New Chat</span>}
-			</Link>
-
-			{/* Chats */}
-			{open && (
-				<>
-					<span className="px-3 mx-2 text-gray-400 font-semibold">Chats</span>
-					<div className="flex-1 overflow-y-auto">
-						{conversations.map((conv) => {
-							const isActive = conv.conversationId === activeConversationId;
-							return (
-								<Link
-									href={`/chats/${conv.conversationId}`}
-									key={conv.conversationId}
-								>
-									<div
-										className={`px-3 py-2 mx-2 my-1 rounded-lg cursor-pointer text-ellipsis whitespace-nowrap overflow-hidden ${
-											isActive ? "bg-gray-600 text-white" : "hover:bg-gray-700"
-										}`}
-									>
-										{conv.title}
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				</>
-			)}
-		</div>
-	);
+      {/* Chats */}
+      {open && (
+        <>
+          <span className="mx-2 px-3 font-semibold text-gray-400">Chats</span>
+          <div className="[scrollbar-gutter:stable flex-1 overflow-y-auto">
+            {conversations.map((conv) => {
+              const isActive = conv.conversationId === activeConversationId;
+              return (
+                <Link
+                  href={`/chats/${conv.conversationId}`}
+                  key={conv.conversationId}
+                >
+                  <div
+                    className={`mx-2 my-1 cursor-pointer overflow-hidden rounded-lg px-3 py-2 text-ellipsis whitespace-nowrap ${
+                      isActive ? "bg-gray-600 text-white" : "hover:bg-gray-700"
+                    }`}
+                  >
+                    {conv.title}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  );
 };

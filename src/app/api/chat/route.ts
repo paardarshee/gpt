@@ -8,6 +8,7 @@ import { storeMessage, getContextForModel } from "@/lib/ai/memory";
 import { Conversation } from "@/lib/models/Conversation";
 import { Message, getMessages } from "@/lib/models/Message";
 import { trimmingContext } from "@/lib/ai/contextWindow";
+import mongoose from "mongoose";
 
 export const maxDuration = 30;
 
@@ -20,6 +21,8 @@ interface ChatRequestBody {
 }
 
 export async function POST(req: NextRequest) {
+	const session = await mongoose.startSession();
+	session.startTransaction();
 	try {
 		const body: ChatRequestBody = await req.json();
 		const {
@@ -54,11 +57,14 @@ export async function POST(req: NextRequest) {
 
 		if (!conversation) {
 			const firstUserText = message ?? "New Chat";
-			conversation = await Conversation.create({
-				userId: userId,
-				title: firstUserText.substring(0, 50),
-				conversationId: conversationId,
-			});
+			conversation = await Conversation.create(
+				{
+					userId: userId,
+					title: firstUserText.substring(0, 50),
+					conversationId: conversationId,
+				},
+				{ session }
+			);
 		} else {
 			if (process.env.NODE_ENV === "production") {
 				contextMessages = await getContextForModel(conversation._id.toString());
@@ -76,24 +82,40 @@ export async function POST(req: NextRequest) {
 				if (messageToEdit && messageToEdit.createdAt) {
 					const oldMessageCreationTime = messageToEdit.createdAt;
 					messageToEdit.content = message;
-					await messageToEdit.save();
+					await messageToEdit.save({ session });
 
 					// Delete all messages updated after this message creation time
 
-					await Message.deleteMany({
-						conversationId: conversation._id,
-						createdAt: { $gt: oldMessageCreationTime },
-					});
+					await Message.deleteMany(
+						{
+							conversationId: conversation._id,
+							createdAt: { $gt: oldMessageCreationTime },
+						},
+						{ session }
+					);
 					return messageToEdit;
 				}
 			} else {
-				const newMsg = await Message.create({
+				const newMsg = new Message({
 					conversationId: conversation._id,
 					role: "user",
-					content: message as string,
-					msgId: msgId as string,
+					content: message,
+					msgId: msgId,
 					attachments: attachments || [],
 				});
+				// const newMsg = await Message.create(
+				// 	[
+				// 		{
+				// 			conversationId: conversation._id,
+				// 			role: "user",
+				// 			content: message as string,
+				// 			msgId: msgId as string,
+				// 			attachments: attachments || [],
+				// 		},
+				// 	],
+				// 	{ session }
+				// );
+				newMsg.save({ session });
 				return newMsg;
 			}
 		};
@@ -133,17 +155,21 @@ export async function POST(req: NextRequest) {
 						{ role: "assistant", content: text },
 					]);
 				}
-				await Message.create({
+				const assistantMSg = new Message({
 					msgId: `reply_to_${msgId}`,
 					conversationId: conversation._id,
 					role: "assistant",
 					content: text,
 				});
+				await assistantMSg.save({ session });
+				await session.commitTransaction();
+				await session.endSession();
 			},
 		});
 
 		return result.toUIMessageStreamResponse();
 	} catch (err: unknown) {
+		await session.endSession();
 		if (err instanceof Error) {
 			console.error("Chat route error:", err.message, err.stack);
 		} else {
