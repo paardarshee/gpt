@@ -5,6 +5,7 @@ import { useChatStore } from "@/store/chatStore";
 import { createUUID } from "@/lib/utils";
 import { useChatInputStore } from "@/store/chatInputStore";
 import NewChat from "@/components/chat/NewChat";
+import TopBar from "@/components/TopBar";
 
 export default function NewChatPage() {
   const router = useRouter();
@@ -36,7 +37,9 @@ export default function NewChatPage() {
   return (
     <div className="relative flex h-full flex-col bg-white text-gray-900 dark:bg-[#343541] dark:text-gray-100">
       {/* Input */}
-
+      <div>
+        <TopBar />
+      </div>
       <div className="flex w-full flex-1 items-center justify-center px-4 py-4">
         <div className="mx-auto w-full max-w-3xl">
           <div className="mx-auto flex w-full justify-center p-2 text-4xl text-white">

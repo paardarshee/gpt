@@ -21,12 +21,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`text-md flex h-screen max-h-screen w-screen max-w-screen flex-col overflow-hidden font-sans font-[400] md:flex-row dark:bg-[#343541]`}
+        className={`text-md flex h-screen max-h-screen w-screen max-w-screen flex-row overflow-hidden font-sans font-[400] dark:bg-[#343541]`}
       >
         <Sidebar />
-        <div className="h-[calc(100vh-64px)] flex-1 md:h-screen">
-          {children}
-        </div>
+        <div className="h-screen flex-1">{children}</div>
       </body>
     </html>
   );

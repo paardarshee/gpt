@@ -1,7 +1,7 @@
 "use client";
 import { Copy, Tick } from "../SVG";
-import { useState } from "react";
-import Markdown from "react-markdown";
+import React, { useState } from "react";
+import Markdown from "@/components/Markdown";
 type AssistantChatProps = {
   msg: string; // Assistant message content
 };
@@ -30,7 +30,8 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
       {/* Chat bubble */}
       <div className="flex">
         <div className="relative rounded-2xl py-2.5 break-words whitespace-pre-wrap text-gray-100">
-          <Markdown>{msg}</Markdown>
+          <Markdown content={msg} />
+          {/* <ReactMarkdown>{msg}</ReactMarkdown> */}
         </div>
       </div>
 

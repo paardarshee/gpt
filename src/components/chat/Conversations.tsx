@@ -10,17 +10,22 @@ import AssistantChat from "@/components/chat/AssistantChat";
 import EditMessage from "./EditMEssage";
 import { Conversation, useConversationStore } from "@/store/conversationStore";
 
+type ConversationsProps = {
+  chatId: string;
+  streaming: boolean;
+  setStreaming: (streaming: boolean) => void;
+  handleAddBorder: (add: boolean) => void;
+};
+
 export default function Connversations({
   chatId,
   streaming,
   setStreaming,
-}: {
-  chatId: string;
-  streaming: boolean;
-  setStreaming: (streaming: boolean) => void;
-}) {
+  handleAddBorder,
+}: ConversationsProps) {
   const { streamingText, startStreaming } = useStreamingAI();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
 
@@ -36,6 +41,22 @@ export default function Connversations({
   );
 
   const addConversation = useConversationStore((s) => s.addConversation);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const onScroll = () => {
+      if (el.scrollTop > 10) {
+        handleAddBorder(true);
+      } else {
+        handleAddBorder(false);
+      }
+    };
+
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  });
 
   // Scroll to bottom
   useEffect(() => {
@@ -123,7 +144,10 @@ export default function Connversations({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]">
+    <div
+      ref={scrollRef}
+      className="scrolled relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]"
+    >
       <div className="mx-auto w-full bg-red-800 px-4 sm:px-6 md:max-w-2xl lg:max-w-3xl lg:px-8">
         <div className="flex flex-col gap-6">
           {messages.map((m, i) => (

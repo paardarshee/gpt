@@ -4,11 +4,12 @@ import { useEffect, useState, Dispatch, SetStateAction } from "react";
 import { Plus, Menu, Logo, HamBurgerMenu, Create } from "./SVG";
 import Link from "next/link";
 import { useConversationStore, Conversation } from "@/store/conversationStore";
+import { useAppStore } from "@/store/AppStore";
 import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
-  const [open, setOpen] = useState(false); // default closed on mobile
   const { conversations, setConversations } = useConversationStore();
+  const { isSidebarOpen, toggleSidebar } = useAppStore();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -33,46 +34,29 @@ export default function Sidebar() {
     : null;
 
   return (
-    <div className="flex items-center">
+    <div className="relative flex items-center">
       {/* Mobile Top Bar */}
-      <div className="flex w-screen items-center justify-between px-3 py-2 text-white md:hidden">
-        {/* Hamburger */}
-        <button
-          onClick={() => setOpen(true)}
-          className="rounded-md p-2 hover:bg-gray-700 focus:outline-none"
-        >
-          <HamBurgerMenu className="h-6 w-6" />
-        </button>
-
-        {/* New Chat */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-600"
-        >
-          <Create className="h-5 w-5" />
-        </Link>
-      </div>
 
       {/* Mobile Drawer */}
-      <div className="md:hidden">
+      <div className="transition-all duration-500 md:hidden">
         {/* Backdrop */}
-        {open && (
+        {isSidebarOpen && (
           <div
             className="bg-opacity-50 fixed inset-0 z-40 bg-gray-700/20"
-            onClick={() => setOpen(false)}
+            onClick={toggleSidebar}
           />
         )}
 
         {/* Sliding Sidebar */}
         <div
           className={`fixed top-0 left-0 z-50 h-screen transform transition-transform duration-300 ease-in-out ${
-            open ? "translate-x-0" : "-translate-x-full"
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           {/* Close Button */}
           <button
-            onClick={() => setOpen(false)}
-            className="absolute top-3 right-3 z-60 rounded-full bg-gray-700 p-1 shadow-sm hover:bg-gray-600"
+            onClick={toggleSidebar}
+            className="absolute top-3 right-3 z-60 rounded p-1 shadow-sm hover:bg-gray-600"
           >
             <div className="flex h-4 w-4 rotate-45 items-center justify-center text-white">
               <Plus className="h-5 w-5" />
@@ -83,7 +67,8 @@ export default function Sidebar() {
             conversations={conversations}
             activeConversationId={activeConversationId}
             open={true} // always expanded on mobile drawer
-            setOpen={setOpen}
+            toggleSidebar={toggleSidebar}
+            forMobile={true}
           />
         </div>
       </div>
@@ -93,8 +78,8 @@ export default function Sidebar() {
         <SideBarComponent
           conversations={conversations}
           activeConversationId={activeConversationId}
-          open={open}
-          setOpen={setOpen}
+          open={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
         />
       </div>
     </div>
@@ -105,53 +90,59 @@ type SideBarProps = {
   conversations: Conversation[];
   activeConversationId: string | null;
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  toggleSidebar: () => void;
+  forMobile?: boolean;
 };
 
 const SideBarComponent = ({
   conversations,
   activeConversationId,
   open,
-  setOpen,
+  toggleSidebar,
+  forMobile = false,
 }: SideBarProps) => {
   return (
-    <div
+    <nav
       className={`${
-        open ? "w-60" : "w-14"
-      } text-md flex h-screen flex-col bg-[#202123] text-white`}
+        open ? "w-[245px]" : "w-[59px] md:cursor-e-resize"
+      } text-md group relative flex h-screen flex-col bg-[#202123] text-white transition-all duration-500 md:after:absolute md:after:right-0 md:after:h-full md:after:w-[0.5px] md:after:bg-yellow-500/50`}
+      onClick={!open ? toggleSidebar : undefined}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2">
+      <div className="flex items-center justify-between p-2.5">
         {open && (
-          <span className="text-lg font-semibold">
-            <Logo className="h-6 w-6" />
-          </span>
+          <button className="relative rounded bg-red-900 p-1 hover:bg-gray-700">
+            <Link href="/">
+              <span className="flex items-center justify-center">
+                <Logo className="h-6 w-6" />
+              </span>
+            </Link>
+          </button>
         )}
-        <button
-          onClick={() => setOpen(!open)}
-          className="group relative rounded bg-red-900 p-1 hover:bg-gray-700"
-        >
+        <button className="relative h-8 w-8">
           {/* Logo (default) */}
           {!open && (
-            <span className="flex items-center justify-center group-hover:hidden">
+            <span className="flex items-center justify-center rounded p-1 group-hover:hidden">
               <Logo className="h-6 w-6" />
             </span>
           )}
 
           {/* Menu (on hover) */}
           <span
-            className={`${
-              !open ? "hidden" : "flex"
-            } items-center justify-center group-hover:flex`}
+            className={`${open ? "md:flex md:cursor-w-resize" : "cursor-e-resize md:group-hover:flex"} border-box hidden items-center justify-center rounded p-1.5 hover:bg-gray-700`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleSidebar();
+            }}
           >
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           </span>
         </button>
       </div>
       {/* New Chat */}
       <div className="flex items-center justify-between p-3">
         <button
-          onClick={() => setOpen(!open)}
+          onClick={toggleSidebar}
           className="group relative w-full rounded p-1 hover:bg-gray-700"
         >
           <Link href="/">
@@ -174,6 +165,7 @@ const SideBarComponent = ({
                 <Link
                   href={`/chats/${conv.conversationId}`}
                   key={conv.conversationId}
+                  onClick={() => forMobile && toggleSidebar()}
                 >
                   <div
                     className={`mx-2 my-1 cursor-pointer overflow-hidden rounded-lg px-3 py-2 text-ellipsis whitespace-nowrap ${
@@ -188,6 +180,6 @@ const SideBarComponent = ({
           </div>
         </>
       )}
-    </div>
+    </nav>
   );
 };
