@@ -72,7 +72,7 @@ export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
   };
 
   return (
-    <div className="relative -top-7 bottom-0 w-full border-gray-200 dark:border-gray-700">
+    <div className="relative -top-7 bottom-0 w-full">
       {/* Gradient overlay */}
       <div className="to-bg-primary absolute -top-8 h-15 w-full bg-gradient-to-b from-transparent"></div>
 

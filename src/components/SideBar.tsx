@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, Dispatch, SetStateAction } from "react";
-import { Plus, Menu, Logo, HamBurgerMenu, Create } from "./SVG";
+import { useEffect, useState } from "react";
+import { Plus, Menu, Logo, Create } from "./SVG";
 import Link from "next/link";
 import { useConversationStore, Conversation } from "@/store/conversationStore";
 import { useAppStore } from "@/store/AppStore";
@@ -42,7 +42,7 @@ export default function Sidebar() {
         {/* Backdrop */}
         {isSidebarOpen && (
           <div
-            className="bg-opacity-50 fixed inset-0 z-40 bg-gray-700/20"
+            className="fixed inset-0 z-40 bg-gray-50/50 dark:bg-black/50"
             onClick={toggleSidebar}
           />
         )}
@@ -54,14 +54,6 @@ export default function Sidebar() {
           }`}
         >
           {/* Close Button */}
-          <button
-            onClick={toggleSidebar}
-            className="absolute top-3 right-3 z-60 rounded p-1 shadow-sm hover:bg-gray-600"
-          >
-            <div className="flex h-4 w-4 rotate-45 items-center justify-center text-white">
-              <Plus className="h-5 w-5" />
-            </div>
-          </button>
 
           <SideBarComponent
             conversations={conversations}
@@ -101,17 +93,38 @@ const SideBarComponent = ({
   toggleSidebar,
   forMobile = false,
 }: SideBarProps) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollTop = e.currentTarget.scrollTop;
+    setIsScrolled(scrollTop > 0);
+  };
   return (
     <nav
       className={`${
-        open ? "w-[245px]" : "group w-[59px] md:cursor-e-resize"
-      } text-md bg-bg-primary md:after:bg-border-default relative flex h-screen flex-col transition-all md:after:absolute md:after:right-0 md:after:h-full md:after:w-[0.1px]`}
+        open
+          ? "w-[245px] overflow-y-auto bg-[#161616] [scrollbar-gutter:stable]"
+          : "group bg-bg-primary w-[59px] md:cursor-e-resize"
+      } shadow-border-default relative flex h-screen flex-col text-sm font-[300] shadow-[0.5px_0_0_0] transition-all duration-200`}
       onClick={!open ? toggleSidebar : undefined}
+      onScroll={handleScroll}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-2.5">
+      <div
+        className={`sticky top-0 z-10 flex items-center justify-between ${open && "bg-[#161616]"} p-2.5 ${isScrolled ? "shadow-border-default shadow-[0_0.4px_0_0]" : ""}`}
+      >
+        {forMobile && (
+          <button
+            onClick={toggleSidebar}
+            className="hover:bg-bg-secondary absolute top-1.5 right-1.5 z-10 rounded p-2"
+          >
+            <div className="flex h-5 w-5 rotate-45 items-center justify-center">
+              <Plus className="h-5 w-5" />
+            </div>
+          </button>
+        )}
         <button
-          className={`relative h-8 w-8 rounded p-1 hover:bg-gray-700 ${!open && "group-hover:hidden"}`}
+          className={`hover:bg-bg-tertiary relative h-8 w-8 rounded p-1 ${!open && "group-hover:hidden"}`}
         >
           <Link href="/">
             <span className="flex items-center justify-center">
@@ -127,36 +140,33 @@ const SideBarComponent = ({
           }}
         >
           <span
-            className={`border-box flex items-center justify-center rounded p-1.5 hover:bg-gray-700`}
+            className={`border-box hover:bg-bg-secondary flex items-center justify-center rounded p-1.5`}
             onClick={(e) => {
               e.stopPropagation();
               toggleSidebar();
             }}
           >
-            <Menu className="h-5 w-5" />
+            <Menu className="text-text-tertiary h-5 w-5" />
           </span>
         </button>
       </div>
       {/* New Chat */}
-      <div className="flex items-center justify-between p-3">
-        <button
-          onClick={toggleSidebar}
-          className="group relative w-full rounded p-1 hover:bg-gray-700"
-        >
-          <Link href="/">
-            <div className="flex items-center gap-2">
-              <Create className="h-5 w-5" />
-              {open && <span>New Chat</span>}
-            </div>
-          </Link>
-        </button>
+      <div className="flex-1 px-1.5 pb-3">
+        <Link href="/">
+          <button
+            className={`hover:bg-bg-tertiary flex cursor-pointer items-center gap-1.5 rounded-lg p-2 ${open ? "w-full" : ""}`}
+          >
+            <Create className="h-5 w-5" />
+            {open && <span>New chat</span>}
+          </button>
+        </Link>
       </div>
 
       {/* Chats */}
       {open && (
         <>
-          <span className="mx-2 px-3 font-semibold text-gray-400">Chats</span>
-          <div className="[scrollbar-gutter:stable flex-1 overflow-y-auto">
+          <span className="text-text-tertiary px-3">Chats</span>
+          <div className="flex-1 px-1.5">
             {conversations.map((conv) => {
               const isActive = conv.conversationId === activeConversationId;
               return (
@@ -166,8 +176,8 @@ const SideBarComponent = ({
                   onClick={() => forMobile && toggleSidebar()}
                 >
                   <div
-                    className={`mx-2 my-1 cursor-pointer overflow-hidden rounded-lg px-3 py-2 text-ellipsis whitespace-nowrap ${
-                      isActive ? "bg-gray-600 text-white" : "hover:bg-gray-700"
+                    className={`my-1 cursor-pointer overflow-hidden rounded-lg px-3 py-2 text-ellipsis whitespace-nowrap ${
+                      isActive ? "bg-bg-secondary" : "hover:bg-bg-tertiary"
                     }`}
                   >
                     {conv.title}

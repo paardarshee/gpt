@@ -37,7 +37,7 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
       {/* Copy button */}
       <div className="mt-1 flex gap-1 pr-1 text-sm text-gray-300 transition-opacity">
         <button
-          className="cursor-pointer rounded-lg p-1.5 hover:bg-[rgba(50,50,50,0.6)]"
+          className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
           title="Copy"
           onClick={handleCopy}
         >

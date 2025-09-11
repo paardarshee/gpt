@@ -35,17 +35,17 @@ export default function NewChatPage() {
   };
 
   return (
-    <div className="relative flex h-full flex-col bg-white text-gray-900 dark:bg-[#343541] dark:text-gray-100">
+    <div className="relative flex h-full w-full flex-col">
       {/* Input */}
       <div>
         <TopBar />
       </div>
       <div className="flex w-full flex-1 items-center justify-center px-4 py-4">
         <div className="mx-auto w-full max-w-3xl">
-          <div className="mx-auto flex w-full justify-center p-2 text-4xl text-white">
+          <div className="mx-auto flex w-full justify-center p-2 text-2xl text-white">
             Ready when You Are!
           </div>
-          <div className="relative flex items-center">
+          <div className="relative mx-auto flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
             <NewChat
               value={chatInput.input}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>

@@ -8,7 +8,7 @@ export default function TopBar() {
       {/* Hamburger */}
       <button
         onClick={toggleSidebar}
-        className="focus:border-bg-primary-inverted box-border rounded-md border-2 border-transparent p-1 md:hidden"
+        className="focus:border-bg-primary-inverted box-border cursor-pointer rounded-md border-2 border-transparent p-1 md:hidden"
       >
         <HamBurgerMenu className="h-6 w-6" />
       </button>
