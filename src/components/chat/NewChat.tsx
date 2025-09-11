@@ -101,7 +101,7 @@ export default function NewChat({
   return (
     <div className="mx-auto w-full">
       <div
-        className={`relative flex w-full flex-col rounded-[28px] bg-[#343537] p-2 transition-all duration-300`}
+        className={`bg-bg-secondary shadow-border-default relative flex w-full flex-col rounded-4xl p-2 shadow-[0_0_0_0.2px] transition-all duration-300`}
       >
         {attachments.length > 0 && (
           <Attachments
@@ -132,7 +132,7 @@ export default function NewChat({
               accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain,text/csv"
             />
             <button
-              className="mr-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-red-800 text-white hover:bg-gray-500 focus:outline-none"
+              className="hover:bg-bg-tertiary mr-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full focus:outline-none"
               onClick={handleButtonClick}
             >
               <Plus />
@@ -167,7 +167,7 @@ export default function NewChat({
                 handleSubmit().finally(() => setDisabled(false));
               }}
               disabled={!value.trim() || disabled}
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-gray-800 transition-colors disabled:cursor-default disabled:bg-[#8a8585]"
+              className="disabled:bg-bg-tertiary disabled:text-text-primary bg-bg-primary-inverted text-text-inverted flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-colors disabled:cursor-default"
             >
               <UpArrow />
             </button>

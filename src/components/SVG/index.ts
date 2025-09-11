@@ -7,5 +7,17 @@ import Menu from "./Menu";
 import Logo from "./Logo";
 import HamBurgerMenu from "./HamBurgerMenu";
 import Create from "./Create";
+import Document from "./Document";
 
-export { Copy, Edit, Tick, UpArrow, Plus, Menu, Logo, HamBurgerMenu, Create };
+export {
+  Copy,
+  Edit,
+  Tick,
+  UpArrow,
+  Plus,
+  Menu,
+  Logo,
+  HamBurgerMenu,
+  Create,
+  Document,
+};

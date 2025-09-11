@@ -21,7 +21,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`text-md flex h-screen max-h-screen w-screen max-w-screen flex-row overflow-hidden font-sans font-[400] dark:bg-[#343541]`}
+        className={`text-md text-text-primary bg-bg-primary flex h-screen max-h-screen w-screen max-w-screen flex-row overflow-hidden font-sans font-[400]`}
       >
         <Sidebar />
         <div className="h-screen flex-1">{children}</div>

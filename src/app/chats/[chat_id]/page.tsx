@@ -24,7 +24,7 @@ export default function ChatPage({ params }: ChatProps) {
   };
 
   return (
-    <div className="relative flex h-full flex-col bg-white text-gray-900 dark:bg-[#343541] dark:text-gray-100">
+    <div className="relative flex h-full flex-col">
       <div ref={topBarRef} className="relative">
         <TopBar />
       </div>

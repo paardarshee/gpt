@@ -5,6 +5,75 @@
     ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica,
     "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
   --breakpoint-xl: 75.625rem;
+
+  --color-bg-primary: #fff;
+  --color-bg-primary-inverted: #000;
+  --color-bg-secondary: #e8e8e8;
+  --color-bg-tertiary: #f3f3f3;
+  --color-bg-scrim: #0d0d0d80;
+  --color-bg-elevated-primary: #fff;
+  --color-bg-elevated-secondary: #f9f9f9;
+  --color-bg-status-warning: #fff5f0;
+  --color-bg-status-error: #fff0f0;
+
+  --color-border-default: #0d0d0d1a;
+  --color-border-heavy: #0d0d0d26;
+  --color-border-light: #0d0d0d0d;
+  --color-border-status-warning: #ffe7d9;
+  --color-border-status-error: #ffe1e0;
+
+  --color-text-primary: #0d0d0d;
+  --color-text-secondary: #5d5d5d;
+  --color-text-tertiary: #8f8f8f;
+  --color-text-inverted: #fff;
+  --color-text-accent: #66b5ff;
+  --color-text-status-warning: #e25507;
+  --color-text-status-error: #e02e2a;
+
+  --color-icon-primary: #0d0d0d;
+  --color-icon-secondary: #5d5d5d;
+  --color-icon-tertiary: #8f8f8f;
+  --color-icon-inverted: #fff;
+  --color-icon-accent: #0285ff;
+  --color-icon-status-warning: #e25507;
+  --color-icon-status-error: #e02e2a;
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-primary: #212121;
+    --color-bg-primary-inverted: #fff;
+    --color-bg-secondary: #303030;
+    --color-bg-tertiary: #414141;
+    --color-bg-scrim: #0d0d0d80;
+    --color-bg-elevated-primary: #303030;
+    --color-bg-elevated-secondary: #181818;
+    --color-bg-status-warning: #4a2206;
+    --color-bg-status-error: #4d100e;
+
+    --color-border-default: #ffffff26;
+    --color-border-heavy: #fff3;
+    --color-border-light: #ffffff0d;
+    --color-border-status-warning: #4a2206;
+    --color-border-status-error: #4d100e;
+
+    --color-text-primary: #fff;
+    --color-text-secondary: #f3f3f3;
+    --color-text-tertiary: #afafaf;
+    --color-text-inverted: #0d0d0d;
+    --color-text-accent: #66b5ff;
+    --color-text-status-warning: #ff9e6c;
+    --color-text-status-error: #ff8583;
+
+    --color-icon-primary: #e8e8e8;
+    --color-icon-secondary: #cdcdcd;
+    --color-icon-tertiary: #afafaf;
+    --color-icon-inverted: #0d0d0d;
+    --color-icon-accent: #66b5ff;
+    --color-icon-status-warning: #ff9e6c;
+    --color-icon-status-error: #ff8583;
+  }
 }
 
 @layer base {
@@ -36,77 +105,15 @@
     content: "";
     position: absolute;
     bottom: 0px;
-    height: 0.5px; /* or 0.5px if your browser supports */
+    height: 0.1px; /* or 0.5px if your browser supports */
     width: 100%;
-    background-color: rgb(202 138 4); /* Tailwind's yellow-600 */
+    background-color: var(--color-border-default); /* Tailwind's yellow-600 */
     z-index: 10;
   }
-}
-
-:root {
-  --bg-primary: #fff;
-  --bg-primary-inverted: #000;
-  --bg-secondary: #e8e8e8;
-  --bg-tertiary: #f3f3f3;
-  --bg-scrim: #0d0d0d80;
-  --bg-elevated-primary: #fff;
-  --bg-elevated-secondary: #f9f9f9;
-  --bg-status-warning: #fff5f0;
-  --bg-status-error: #fff0f0;
-  --border-default: #0d0d0d1a;
-  --border-heavy: #0d0d0d26;
-  --border-light: #0d0d0d0d;
-  --border-status-warning: #ffe7d9;
-  --border-status-error: #ffe1e0;
-  --text-primary: #0d0d0d;
-  --text-secondary: #5d5d5d;
-  --text-tertiary: #8f8f8f;
-  --text-inverted: #fff;
-  --text-inverted-static: #fff;
-  --text-accent: #66b5ff;
-  --text-status-warning: #e25507;
-  --text-status-error: #e02e2a;
-  --icon-primary: #0d0d0d;
-  --icon-secondary: #5d5d5d;
-  --icon-tertiary: #8f8f8f;
-  --icon-inverted: #fff;
-  --icon-inverted-static: #fff;
-  --icon-accent: #0285ff;
-  --icon-status-warning: #e25507;
-  --icon-status-error: #e02e2a;
-  /* …and so on for the rest */
-}
-
-.dark {
-  --bg-primary: #212121;
-  --bg-primary-inverted: #fff;
-  --bg-secondary: #303030;
-  --bg-tertiary: #414141;
-  --bg-scrim: #0d0d0d80;
-  --bg-elevated-primary: #303030;
-  --bg-elevated-secondary: #181818;
-  --bg-status-warning: #4a2206;
-  --bg-status-error: #4d100e;
-  --border-default: #ffffff26;
-  --border-heavy: #fff3;
-  --border-light: #ffffff0d;
-  --border-status-warning: #4a2206;
-  --border-status-error: #4d100e;
-  --text-primary: #fff;
-  --text-secondary: #f3f3f3;
-  --text-tertiary: #afafaf;
-  --text-inverted: #0d0d0d;
-  --text-inverted-static: #fff;
-  --text-accent: #66b5ff;
-  --text-status-warning: #ff9e6c;
-  --text-status-error: #ff8583;
-  --icon-primary: #e8e8e8;
-  --icon-secondary: #cdcdcd;
-  --icon-tertiary: #afafaf;
-  --icon-inverted: #0d0d0d;
-  --icon-inverted-static: #fff;
-  --icon-accent: #66b5ff;
-  --icon-status-warning: #ff9e6c;
-  --icon-status-error: #ff8583;
-  /* …and so on for the rest */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    scrollbar-width: none;
+  }
 }

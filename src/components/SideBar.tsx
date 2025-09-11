@@ -105,13 +105,13 @@ const SideBarComponent = ({
     <nav
       className={`${
         open ? "w-[245px]" : "group w-[59px] md:cursor-e-resize"
-      } text-md relative flex h-screen flex-col bg-[#202123] text-white transition-all md:after:absolute md:after:right-0 md:after:h-full md:after:w-[0.5px] md:after:bg-yellow-500/50`}
+      } text-md bg-bg-primary md:after:bg-border-default relative flex h-screen flex-col transition-all md:after:absolute md:after:right-0 md:after:h-full md:after:w-[0.1px]`}
       onClick={!open ? toggleSidebar : undefined}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-2.5">
         <button
-          className={`relative h-8 w-8 rounded bg-red-900 p-1 hover:bg-gray-700 ${!open && "group-hover:hidden"}`}
+          className={`relative h-8 w-8 rounded p-1 hover:bg-gray-700 ${!open && "group-hover:hidden"}`}
         >
           <Link href="/">
             <span className="flex items-center justify-center">
