@@ -4,6 +4,7 @@
   --font-sans:
     ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica,
     "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  --breakpoint-xl: 75.625rem;
 }
 
 @layer base {
@@ -15,8 +16,8 @@
 
   /* WebKit (Chrome, Edge, Safari) */
   *::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   *::-webkit-scrollbar-track {

@@ -148,7 +148,7 @@ export default function Connversations({
       ref={scrollRef}
       className="scrolled relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]"
     >
-      <div className="mx-auto w-full bg-red-800 px-4 sm:px-6 md:max-w-2xl lg:max-w-3xl lg:px-8">
+      <div className="mx-auto flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
         <div className="flex flex-col gap-6">
           {messages.map((m, i) => (
             <div key={i} className="flex items-start gap-4 leading-relaxed">

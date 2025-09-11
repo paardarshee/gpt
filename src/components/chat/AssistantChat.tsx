@@ -12,7 +12,6 @@ type AssistantChatProps = {
  */
 export default function AssistantChat({ msg }: AssistantChatProps) {
   const [copied, setCopied] = useState(false);
-
   /**
    * Handles copying the assistant's message to the clipboard.
    */
@@ -26,7 +25,7 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
     }
   };
   return (
-    <div className="group flex w-full flex-col bg-blue-900">
+    <div className="group flex w-full flex-col">
       {/* Chat bubble */}
       <div className="flex">
         <div className="relative rounded-2xl py-2.5 break-words whitespace-pre-wrap text-gray-100">

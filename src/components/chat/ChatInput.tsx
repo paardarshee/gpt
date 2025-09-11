@@ -76,7 +76,7 @@ export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
       {/* Gradient overlay */}
       <div className="absolute -top-8 h-15 w-full bg-gradient-to-b from-transparent to-[#343541]"></div>
 
-      <div className="relative mx-auto flex items-center bg-red-800 px-4 sm:px-6 md:max-w-2xl lg:max-w-3xl lg:px-8">
+      <div className="relative mx-auto flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
         <NewChat
           value={chatInput.input}
           onChange={(e) => chatInput.setInput(e.target.value)}

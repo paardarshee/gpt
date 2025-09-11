@@ -104,32 +104,30 @@ const SideBarComponent = ({
   return (
     <nav
       className={`${
-        open ? "w-[245px]" : "w-[59px] md:cursor-e-resize"
-      } text-md group relative flex h-screen flex-col bg-[#202123] text-white transition-all duration-500 md:after:absolute md:after:right-0 md:after:h-full md:after:w-[0.5px] md:after:bg-yellow-500/50`}
+        open ? "w-[245px]" : "group w-[59px] md:cursor-e-resize"
+      } text-md relative flex h-screen flex-col bg-[#202123] text-white transition-all md:after:absolute md:after:right-0 md:after:h-full md:after:w-[0.5px] md:after:bg-yellow-500/50`}
       onClick={!open ? toggleSidebar : undefined}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-2.5">
-        {open && (
-          <button className="relative rounded bg-red-900 p-1 hover:bg-gray-700">
-            <Link href="/">
-              <span className="flex items-center justify-center">
-                <Logo className="h-6 w-6" />
-              </span>
-            </Link>
-          </button>
-        )}
-        <button className="relative h-8 w-8">
-          {/* Logo (default) */}
-          {!open && (
-            <span className="flex items-center justify-center rounded p-1 group-hover:hidden">
+        <button
+          className={`relative h-8 w-8 rounded bg-red-900 p-1 hover:bg-gray-700 ${!open && "group-hover:hidden"}`}
+        >
+          <Link href="/">
+            <span className="flex items-center justify-center">
               <Logo className="h-6 w-6" />
             </span>
-          )}
-
-          {/* Menu (on hover) */}
+          </Link>
+        </button>
+        <button
+          className={`relative h-8 w-8 ${open ? "md:flex md:cursor-w-resize" : "cursor-e-resize md:group-hover:flex"} hidden`}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleSidebar();
+          }}
+        >
           <span
-            className={`${open ? "md:flex md:cursor-w-resize" : "cursor-e-resize md:group-hover:flex"} border-box hidden items-center justify-center rounded p-1.5 hover:bg-gray-700`}
+            className={`border-box flex items-center justify-center rounded p-1.5 hover:bg-gray-700`}
             onClick={(e) => {
               e.stopPropagation();
               toggleSidebar();

@@ -99,7 +99,7 @@ export default function NewChat({
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl">
+    <div className="mx-auto w-full">
       <div
         className={`relative flex w-full flex-col rounded-[28px] bg-[#343537] p-2 transition-all duration-300`}
       >
