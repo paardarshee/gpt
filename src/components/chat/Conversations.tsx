@@ -147,7 +147,7 @@ export default function Connversations({
   return (
     <div
       ref={scrollRef}
-      className="scrolled relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]"
+      className="scrolled custom-scrollbar relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]"
     >
       <div className="mx-auto mb-6 flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
         <div className="flex flex-col gap-6">

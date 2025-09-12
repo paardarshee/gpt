@@ -103,9 +103,9 @@ const SideBarComponent = ({
     <nav
       className={`${
         open
-          ? "w-[245px] overflow-y-auto bg-[#161616] [scrollbar-gutter:stable]"
-          : "group bg-bg-primary w-[59px] md:cursor-e-resize"
-      } shadow-border-default relative flex h-screen flex-col text-sm font-[300] shadow-[0.5px_0_0_0] transition-all duration-200`}
+          ? "w-[259px] overflow-y-auto bg-[#161616] [scrollbar-gutter:stable]"
+          : "group bg-bg-primary w-[58px] shadow-[0.5px_0_0_0] md:cursor-e-resize"
+      } custom-scrollbar shadow-border-default relative flex h-screen flex-col text-sm font-[300] transition-all duration-200`}
       onClick={!open ? toggleSidebar : undefined}
       onScroll={handleScroll}
     >
@@ -119,7 +119,7 @@ const SideBarComponent = ({
             className="hover:bg-bg-secondary absolute top-1.5 right-1.5 z-10 rounded p-2"
           >
             <div className="flex h-5 w-5 rotate-45 items-center justify-center">
-              <Plus className="h-5 w-5" />
+              <Plus className="text-text-tertiary h-5 w-5" />
             </div>
           </button>
         )}
@@ -140,13 +140,13 @@ const SideBarComponent = ({
           }}
         >
           <span
-            className={`border-box hover:bg-bg-secondary flex items-center justify-center rounded p-1.5`}
+            className={`border-box hover:bg-bg-secondary text-text-tertiary flex items-center justify-center rounded p-1.5`}
             onClick={(e) => {
               e.stopPropagation();
               toggleSidebar();
             }}
           >
-            <Menu className="text-text-tertiary h-5 w-5" />
+            <Menu className="h-5 w-5" />
           </span>
         </button>
       </div>
