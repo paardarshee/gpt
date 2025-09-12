@@ -151,7 +151,7 @@ const SideBarComponent = ({
         </button>
       </div>
       {/* New Chat */}
-      <div className="flex-1 px-1.5 pb-3">
+      <div className="px-1.5 pb-3">
         <Link href="/">
           <button
             className={`hover:bg-bg-tertiary flex cursor-pointer items-center gap-1.5 rounded-lg p-2 ${open ? "w-full" : ""}`}

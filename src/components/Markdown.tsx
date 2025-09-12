@@ -111,7 +111,7 @@ export default function MarkdownParser({ content }: MarkdownParserProps) {
       }
     };
 
-    for (let line of lines) {
+    for (const line of lines) {
       const hMatch = line.match(/^\s{0,3}(#{1,6})\s+(.*)$/);
       if (hMatch) {
         closeParagraph();
