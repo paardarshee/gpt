@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { uploadToCloudinary } from "@/lib/uploads/cloudinary";
 import { Attachment } from "@/lib/models/Attachment";
 import { connectDB } from "@/lib/db";
+import mongoose from "mongoose";
 
 export async function POST(req: NextRequest) {
+	const session = await mongoose.startSession();
+	session.startTransaction();
 	try {
 		await connectDB();
 		const formData = await req.formData();
@@ -50,7 +53,9 @@ export async function POST(req: NextRequest) {
 			});
 
 		// Save in DB
-		const attachments = await Attachment.insertMany(attachmentsData);
+		const attachments = await Attachment.insertMany(attachmentsData, {
+			session,
+		});
 
 		if (attachments.length > 0) {
 			return NextResponse.json({
@@ -69,5 +74,8 @@ export async function POST(req: NextRequest) {
 			{ message: "failure", error: "Upload failed" },
 			{ status: 500 }
 		);
+	} finally {
+		await session.commitTransaction();
+		session.endSession();
 	}
 }
