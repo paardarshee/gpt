@@ -33,7 +33,7 @@ export default function Attachments({
         <div key={index} className="relative inline-flex w-fit items-center">
           {attachment.fileType === "image" ? (
             <div
-              className={`relative ${isEditable ? "h-16 w-16" : "h-64 w-64"} bg-bg-secondary flex-shrink-0 overflow-hidden rounded-lg`}
+              className={`relative ${isEditable ? "bg-bg-tertiary h-16 w-16" : "bg-bg-secondary h-64 w-64"} bg-bg-secondary flex-shrink-0 overflow-hidden rounded-lg`}
             >
               <Image
                 src={attachment.url}

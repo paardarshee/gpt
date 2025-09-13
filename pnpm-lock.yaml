@@ -11,12 +11,9 @@ importers:
       '@ai-sdk/google':
         specifier: ^2.0.11
         version: 2.0.11(zod@4.1.5)
-      '@ai-sdk/openai':
-        specifier: ^2.0.23
-        version: 2.0.23(zod@4.1.5)
-      '@ai-sdk/react':
-        specifier: ^2.0.30
-        version: 2.0.30(react@19.1.0)(zod@4.1.5)
+      '@uploadcare/react-uploader':
+        specifier: ^1.10.2
+        version: 1.10.2(@opentelemetry/api@1.9.0)(@types/react@19.1.12)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       ai:
         specifier: ^5.0.30
         version: 5.0.30(zod@4.1.5)
@@ -102,12 +99,6 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4
 
-  '@ai-sdk/openai@2.0.23':
-    resolution: {integrity: sha512-uOXk8HzmMUoCmD0JMX/Y1HC/ABOR/Jza2Z2rkCaJISDYz3fp5pnb6eNjcPRL48JSMzRAGp9UP5p0OpxS06IJZg==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.25.76 || ^4
-
   '@ai-sdk/provider-utils@3.0.7':
     resolution: {integrity: sha512-o3BS5/t8KnBL3ubP8k3w77AByOypLm+pkIL/DCw0qKkhDbvhCy+L3hRTGPikpdb8WHcylAeKsjgwOxhj4cqTUA==}
     engines: {node: '>=18'}
@@ -117,16 +108,6 @@ packages:
   '@ai-sdk/provider@2.0.0':
     resolution: {integrity: sha512-6o7Y2SeO9vFKB8lArHXehNuusnpddKPk7xqL7T2/b+OvXMRIXUO1rR4wcv1hAFUAT9avGZshty3Wlua/XA7TvA==}
     engines: {node: '>=18'}
-
-  '@ai-sdk/react@2.0.30':
-    resolution: {integrity: sha512-3DepYWZqR4RgowpVYllsIWDCiYl3lHWN1w4fp+uLIvyqlWnTZqa3PWdEWjHbxNt98Y9Vh0VpVQKyAN7t3+to1Q==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      react: ^18 || ^19 || ^19.0.0-rc
-      zod: ^3.25.76 || ^4
-    peerDependenciesMeta:
-      zod:
-        optional: true
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -560,6 +541,9 @@ packages:
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
+  '@symbiotejs/symbiote@1.11.7':
+    resolution: {integrity: sha512-fUOJwzuldeApJ533YeTdrfnpp4nsA+ss1eiNBodX7RHf4LnhPB2Z9HP4fF3m2YhKYnxK0whjXaKA+wrxTRP5qA==}
+
   '@tailwindcss/node@4.1.12':
     resolution: {integrity: sha512-3hm9brwvQkZFe++SBt+oLjo4OLDtkvlE8q2WalaD/7QWaeM7KEJbAiY/LJZUaCs7Xa8aUu4xy3uoyX4q54UVdQ==}
 
@@ -879,6 +863,29 @@ packages:
     resolution: {integrity: sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==}
     cpu: [x64]
     os: [win32]
+
+  '@uploadcare/cname-prefix@6.17.0':
+    resolution: {integrity: sha512-UqomH1TtegTmltLhwnKTN4fPNzUlXx6LQZj0YNIkiA726ih+ao6oPS9ER1rvz/XX4e5EOl7/aj+AHHIscLPncQ==}
+
+  '@uploadcare/file-uploader@1.19.5':
+    resolution: {integrity: sha512-STzb0+SGSNiEmhCDbcRyUdlY84mI/LDZoBhYxXA9rpUsFe/1YpzWYfa60yu/zXCBs60XWig0QPKgkEn4ux90oA==}
+
+  '@uploadcare/image-shrink@6.17.0':
+    resolution: {integrity: sha512-9ZIQR2Uad7BeSH0hqo7W/VenHCwnEqRjFpN6SGynTzG6BxoH/HK8NkuMKdJ8URFisW7dZSXpVMZrCL5kf7FfKA==}
+
+  '@uploadcare/react-adapter@0.3.1':
+    resolution: {integrity: sha512-OyGmGkD/u1CSlFZRY+fze/i90B1NDcdQblRn9bgNFY5JdGQMBWfiUGRbw0CKVcKXKkMJY7cuR8qVEzVd1U/UUQ==}
+    peerDependencies:
+      '@types/react': '>= 17.0.0'
+
+  '@uploadcare/react-uploader@1.10.2':
+    resolution: {integrity: sha512-vQZ4N7fSrgUeCVd+muGJWg207E7fjI7g+4Is5u//Dl1JS5cun0lVK7bjLzenQ8Ywc1IYKI8Ddw/SrjX6lerKGA==}
+    peerDependencies:
+      '@types/react': '>= 17.0.0'
+
+  '@uploadcare/upload-client@6.17.0':
+    resolution: {integrity: sha512-ir6xo6HLy3TVn4lVJ+9fOOcq8vvgMmcXoSP/mM+l1CTKKJmd0hzXqNkZ1CYyz7PiRhLPUC6fprmUuA7rnVC87g==}
+    engines: {node: '>=16'}
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -1232,10 +1239,6 @@ packages:
 
   delegates@1.0.0:
     resolution: {integrity: sha512-bd2L678uiWATM6m5Z1VzNCErI3jiGzt6HGY8OVICs40JQq/HALfbyNJmp0UDakEY4pMMaN0Ly5om/B1VI/+xfQ==}
-
-  dequal@2.0.3:
-    resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
-    engines: {node: '>=6'}
 
   detect-libc@2.0.4:
     resolution: {integrity: sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==}
@@ -1937,6 +1940,10 @@ packages:
   kareem@2.6.3:
     resolution: {integrity: sha512-C3iHfuGUXK2u8/ipq9LfjFfXFxAZMQJJq7vLS45r3D9Y2xQ/m4S8zaR4zMLFWh9AsNPXmcFfUDhTEO8UIC/V6Q==}
     engines: {node: '>=12.0.0'}
+
+  keyux@0.7.2:
+    resolution: {integrity: sha512-Z8ULf9BhSx1hI2rKG2uNjcvMgQmza97ZW2w43phS5VaT4wiTka7tOL4i/GJSc79k65tbvpoTVNCZwam0pqoH6A==}
+    engines: {node: ^18.0.0 || >=20.0.0}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -2926,11 +2933,6 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  swr@2.3.6:
-    resolution: {integrity: sha512-wfHRmHWk/isGNMwlLGlZX5Gzz/uTgo0o2IRuTMcf4CPuPFJZlq0rDaKUx+ozB5nBOReNV1kiOyzMfj+MBMikLw==}
-    peerDependencies:
-      react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
   tailwindcss@4.1.12:
     resolution: {integrity: sha512-DzFtxOi+7NsFf7DBtI3BJsynR+0Yp6etH+nRPTbpWnS2pZBaSksv/JGctNwSWzbFjp0vxSqknaUylseZqMDGrA==}
 
@@ -2951,10 +2953,6 @@ packages:
 
   tar@7.4.3:
     resolution: {integrity: sha512-5S7Va8hKfV7W5U6g3aYxXmlPoZVAwUMy9AOKyF2fVuZa2UD3qZjg578OrLRt8PcNN1PleVaL/5/yYATNL0ICUw==}
-    engines: {node: '>=18'}
-
-  throttleit@2.1.0:
-    resolution: {integrity: sha512-nt6AMGKW1p/70DF/hGBdJB57B8Tspmbp5gfJ8ilhLnt7kkr2ye7hzD6NVG8GGErk2HWF34igrL2CXmNIkzKqKw==}
     engines: {node: '>=18'}
 
   tinyglobby@0.2.14:
@@ -3213,12 +3211,6 @@ snapshots:
       '@ai-sdk/provider-utils': 3.0.7(zod@4.1.5)
       zod: 4.1.5
 
-  '@ai-sdk/openai@2.0.23(zod@4.1.5)':
-    dependencies:
-      '@ai-sdk/provider': 2.0.0
-      '@ai-sdk/provider-utils': 3.0.7(zod@4.1.5)
-      zod: 4.1.5
-
   '@ai-sdk/provider-utils@3.0.7(zod@4.1.5)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
@@ -3229,16 +3221,6 @@ snapshots:
   '@ai-sdk/provider@2.0.0':
     dependencies:
       json-schema: 0.4.0
-
-  '@ai-sdk/react@2.0.30(react@19.1.0)(zod@4.1.5)':
-    dependencies:
-      '@ai-sdk/provider-utils': 3.0.7(zod@4.1.5)
-      ai: 5.0.30(zod@4.1.5)
-      react: 19.1.0
-      swr: 2.3.6(react@19.1.0)
-      throttleit: 2.1.0
-    optionalDependencies:
-      zod: 4.1.5
 
   '@alloc/quick-lru@5.2.0': {}
 
@@ -3665,6 +3647,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@symbiotejs/symbiote@1.11.7': {}
+
   '@tailwindcss/node@4.1.12':
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -3972,6 +3956,52 @@ snapshots:
 
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
+
+  '@uploadcare/cname-prefix@6.17.0': {}
+
+  '@uploadcare/file-uploader@1.19.5':
+    dependencies:
+      '@symbiotejs/symbiote': 1.11.7
+      '@uploadcare/cname-prefix': 6.17.0
+      '@uploadcare/image-shrink': 6.17.0
+      '@uploadcare/upload-client': 6.17.0
+      keyux: 0.7.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  '@uploadcare/image-shrink@6.17.0': {}
+
+  '@uploadcare/react-adapter@0.3.1(@types/react@19.1.12)':
+    dependencies:
+      '@types/react': 19.1.12
+
+  '@uploadcare/react-uploader@1.10.2(@opentelemetry/api@1.9.0)(@types/react@19.1.12)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@types/react': 19.1.12
+      '@uploadcare/file-uploader': 1.19.5
+      '@uploadcare/react-adapter': 0.3.1(@types/react@19.1.12)
+    optionalDependencies:
+      next: 15.5.2(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@opentelemetry/api'
+      - '@playwright/test'
+      - babel-plugin-macros
+      - babel-plugin-react-compiler
+      - bufferutil
+      - react
+      - react-dom
+      - sass
+      - utf-8-validate
+
+  '@uploadcare/upload-client@6.17.0':
+    dependencies:
+      form-data: 4.0.4
+      ws: 8.18.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   abbrev@1.1.1:
     optional: true
@@ -4379,8 +4409,6 @@ snapshots:
 
   delegates@1.0.0:
     optional: true
-
-  dequal@2.0.3: {}
 
   detect-libc@2.0.4: {}
 
@@ -5302,6 +5330,8 @@ snapshots:
       safe-buffer: 5.2.1
 
   kareem@2.6.3: {}
+
+  keyux@0.7.2: {}
 
   keyv@4.5.4:
     dependencies:
@@ -6344,12 +6374,6 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swr@2.3.6(react@19.1.0):
-    dependencies:
-      dequal: 2.0.3
-      react: 19.1.0
-      use-sync-external-store: 1.5.0(react@19.1.0)
-
   tailwindcss@4.1.12: {}
 
   tapable@2.2.3: {}
@@ -6386,8 +6410,6 @@ snapshots:
       minizlib: 3.0.2
       mkdirp: 3.0.1
       yallist: 5.0.0
-
-  throttleit@2.1.0: {}
 
   tinyglobby@0.2.14:
     dependencies:
@@ -6541,6 +6563,7 @@ snapshots:
   use-sync-external-store@1.5.0(react@19.1.0):
     dependencies:
       react: 19.1.0
+    optional: true
 
   util-deprecate@1.0.2: {}
 

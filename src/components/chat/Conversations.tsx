@@ -67,6 +67,8 @@ export default function Connversations({
   useEffect(() => {
     const newChatInput = getNewChatInput();
 
+    console.log(newChatInput);
+
     if (isRedirected && newChatInput) {
       const msgId = createUUID();
       addMessage(chatId, {
@@ -150,7 +152,7 @@ export default function Connversations({
       className="scrolled custom-scrollbar relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]"
     >
       <div className="mx-auto mb-6 flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
-        <div className="flex flex-col gap-6">
+        <div className="flex grow flex-col gap-6">
           {messages.map((m, i) => (
             <div key={i} className="flex items-start gap-4 leading-relaxed">
               {m.role === "user" &&
