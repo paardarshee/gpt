@@ -14,6 +14,7 @@ export function useStreamingAI() {
       conversationId: string,
       isEdit = false,
       attachments: Attachment[] = [],
+      temporary = false,
     ) => {
       // Reset all state
       setStreamingText("");
@@ -32,6 +33,7 @@ export function useStreamingAI() {
             message: input,
             conversationId,
             attachments,
+            temporary,
           };
         }
         const res = await fetch("/api/chat", {

@@ -1,6 +1,6 @@
 "use client";
 import { Attachment } from "@/store/chatStore";
-import { Copy, Edit, Tick } from "../SVG";
+import { Copy, Edit, Tick } from "./SVG";
 import { useState } from "react";
 import Attachments from "@/components/Attachments";
 type UserChatProps = {

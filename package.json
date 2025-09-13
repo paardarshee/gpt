@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.11",
+    "@clerk/nextjs": "^6.32.0",
     "@uploadcare/react-uploader": "^1.10.2",
     "ai": "^5.0.30",
     "cloudinary": "^2.7.0",

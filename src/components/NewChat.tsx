@@ -7,7 +7,7 @@ import {
   useRef,
   useEffect,
 } from "react";
-import { Plus, UpArrow } from "../SVG";
+import { Plus, UpArrow } from "./SVG";
 import { Attachment as AttachmentType } from "@/store/chatStore";
 import Attachments from "@/components/Attachments";
 import {

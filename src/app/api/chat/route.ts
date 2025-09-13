@@ -11,6 +11,7 @@ import { trimmingContext } from "@/lib/ai/contextWindow";
 import mongoose from "mongoose";
 import { bulkUploadToCloudinary } from "@/lib/uploads/cloudinary";
 import { Attachment } from "@/lib/models/Attachment";
+import { auth } from "@clerk/nextjs/server";
 
 export const maxDuration = 30;
 
@@ -34,6 +35,7 @@ interface ChatRequestBody {
   message: string;
   conversationId: string;
   attachments: AttachmentType[];
+  temporary: boolean;
 }
 
 export async function POST(req: NextRequest) {
@@ -41,8 +43,11 @@ export async function POST(req: NextRequest) {
   try {
     session.startTransaction();
     const body: ChatRequestBody = await req.json();
-    const { msgId, conversationId, message, attachments } = body;
-
+    const { msgId, conversationId, message, attachments, temporary } = body;
+    let { userId } = await auth();
+    if (!userId || temporary) {
+      userId = "anonymous";
+    }
     // Sanity check
     if (!message || message.length === 0) {
       return NextResponse.json(
@@ -50,8 +55,6 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-    const userId = "anonymous";
-
     await connectDB();
     let conversation = await Conversation.findOne({
       conversationId: conversationId,
@@ -69,6 +72,7 @@ export async function POST(req: NextRequest) {
         ],
         { session },
       ).then((res) => res[0]);
+      console.log("Created new conversation:", conversation);
     }
 
     const msg: DBMEssageType = await Message.create(

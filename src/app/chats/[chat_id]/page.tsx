@@ -1,7 +1,7 @@
 "use client";
 import { use, useState, useRef } from "react";
-import Conversations from "@/components/chat/Conversations";
-import ChatInput from "@/components/chat/ChatInput";
+import Conversations from "@/components/Conversations";
+import ChatInput from "@/components/ChatInput";
 import TopBar from "@/components/TopBar";
 
 type ChatProps = {

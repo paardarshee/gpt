@@ -1,6 +1,14 @@
 import { AttachmentType } from "@/app/api/chat/route";
-import { cloudinary } from "../cloudinary_config"; // your config path
+// your config path
 import { UploadApiResponse, UploadApiErrorResponse } from "cloudinary";
+
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 type UploadResponse =
   | { success: true; result: UploadApiResponse }

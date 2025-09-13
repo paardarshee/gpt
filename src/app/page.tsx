@@ -1,18 +1,22 @@
+//root_page.tsx
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useChatStore } from "@/store/chatStore";
 import { createUUID } from "@/lib/utils";
 import { useChatInputStore } from "@/store/chatInputStore";
-import NewChat from "@/components/chat/NewChat";
+import NewChat from "@/components/NewChat";
 import TopBar from "@/components/TopBar";
+import TemporaryChat from "@/components/TemporaryChat";
 
 export default function NewChatPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const setNewChatInput = useChatStore((s) => s.setNewChatInput);
   const setRedirected = useChatStore((s) => s.setRedirected);
   const chatInput = useChatInputStore();
 
+  const temporary = searchParams.get("temporary");
   const handleSubmit = async () => {
     if (!chatInput.input.trim()) return;
 
@@ -34,6 +38,9 @@ export default function NewChatPage() {
     router.push(`/chats/${chatId}`);
   };
 
+  if (temporary === "true") {
+    return <TemporaryChat />;
+  }
   return (
     <div className="relative flex h-full w-full flex-col">
       {/* Input */}
@@ -42,7 +49,7 @@ export default function NewChatPage() {
       </div>
       <div className="flex w-full flex-1 items-center justify-center px-4 py-4">
         <div className="mx-auto w-full max-w-3xl">
-          <div className="mx-auto flex w-full justify-center p-2 text-2xl text-white">
+          <div className="text- mx-auto flex w-full justify-center p-2 text-2xl">
             Ready when You Are!
           </div>
           <div className="relative mx-auto flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">

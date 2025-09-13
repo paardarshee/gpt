@@ -1,5 +1,5 @@
 "use client";
-import { Copy, Tick } from "../SVG";
+import { Copy, Tick } from "./SVG";
 import React, { useState } from "react";
 import Markdown from "@/components/Markdown";
 type AssistantChatProps = {

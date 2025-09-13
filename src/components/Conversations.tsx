@@ -5,8 +5,8 @@ import { useStreamingAI } from "@/hooks/useStreamingAI";
 import { useChatStore } from "@/store/chatStore";
 import { createUUID } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
-import UserChat from "@/components/chat/UserChat";
-import AssistantChat from "@/components/chat/AssistantChat";
+import UserChat from "@/components/UserChat";
+import AssistantChat from "@/components/AssistantChat";
 import EditMessage from "./EditMEssage";
 import { Conversation, useConversationStore } from "@/store/conversationStore";
 
@@ -15,13 +15,15 @@ type ConversationsProps = {
   streaming: boolean;
   setStreaming: (streaming: boolean) => void;
   handleAddBorder: (add: boolean) => void;
+  temporary?: boolean;
 };
 
-export default function Connversations({
+export default function Conversations({
   chatId,
   streaming,
   setStreaming,
   handleAddBorder,
+  temporary = false,
 }: ConversationsProps) {
   const { streamingText, startStreaming } = useStreamingAI();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -86,6 +88,7 @@ export default function Connversations({
           chatId,
           false,
           newChatInput.attachments,
+          temporary,
         );
         setStreaming(false);
         if (aiText) {
@@ -95,6 +98,7 @@ export default function Connversations({
             attachments: newChatInput.attachments,
           });
         }
+        if (temporary) return;
         const conversation = await fetch(
           `/api/conversations/${chatId}/metadata`,
         );
@@ -123,7 +127,7 @@ export default function Connversations({
       }
     };
 
-    loadConversation();
+    if (!temporary) loadConversation();
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId, isRedirected]);
 
