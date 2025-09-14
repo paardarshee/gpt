@@ -1,15 +1,18 @@
 import { HamBurgerMenu, Create, TemporaryMessage } from "@/components/ui/SVG";
 import { useAppStore } from "@/store/AppStore";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 export default function TopBar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const inChat = pathname.startsWith("/chat/");
-  const inTemporary = pathname.startsWith("/?temporary=true");
-
+  const inTemporary = searchParams.get("temporary") === "true";
   const { toggleSidebar } = useAppStore();
   return (
-    <div className="flex h-[59px] items-center justify-between px-2">
+    <header
+      className="flex h-[59px] items-center justify-between px-2"
+      aria-label="Top navigation bar"
+    >
       {/* Hamburger */}
       <div className="flex items-center gap-2">
         <button
@@ -40,6 +43,6 @@ export default function TopBar() {
           </Link>
         )}
       </div>
-    </div>
+    </header>
   );
 }

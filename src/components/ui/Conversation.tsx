@@ -25,6 +25,10 @@ export default function ConversationPage(props: ConversationProps) {
     <div
       ref={scrollRef}
       className="scrolled custom-scrollbar relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]"
+      role="log"
+      aria-live="polite"
+      aria-relevant="additions"
+      aria-label="Chat conversation messages"
     >
       <div className="mx-auto mb-6 flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
         <div className="flex grow flex-col gap-6">

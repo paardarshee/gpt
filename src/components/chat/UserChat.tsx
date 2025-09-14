@@ -19,33 +19,50 @@ export default function UserChat({
   const [copied, setCopied] = useState(false);
 
   return (
-    <div className="group flex w-full flex-col gap-2">
-      {/* Chat bubble */}
+    <div
+      className="group flex w-full flex-col gap-2"
+      role="group"
+      aria-label="User message"
+    >
+      {/* Chat bubble attachments */}
       <div className="flex w-full justify-end">
         <Attachments attachments={attachments || []} />
       </div>
+
+      {/* Chat text */}
       <div className="flex w-full justify-end">
-        <div className="bg-bg-secondary relative max-w-[70%] rounded-2xl px-4 py-2.5 break-words whitespace-pre-wrap">
+        <div
+          className="bg-bg-secondary relative max-w-[70%] rounded-2xl px-4 py-2.5 break-words whitespace-pre-wrap"
+          role="textbox"
+          aria-readonly="true"
+        >
           {msg}
         </div>
       </div>
 
       {/* Copy / Edit buttons */}
-      <div className="mt-1 flex justify-end gap-1 pr-1 text-sm opacity-0 transition-opacity group-hover:opacity-100">
+      <div
+        className="mt-1 flex justify-end gap-1 pr-1 text-sm opacity-0 transition-opacity group-hover:opacity-100"
+        role="toolbar"
+        aria-label="Message actions"
+      >
         <button
-          className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
-          title="Copy"
+          type="button"
+          aria-label={copied ? "Message copied" : "Copy message"}
           onClick={() => handleCopy(setCopied, msg)}
+          className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
         >
-          {copied ? <Tick /> : <Copy />}
+          {copied ? <Tick aria-hidden="true" /> : <Copy aria-hidden="true" />}
         </button>
+
         {!(attachments.length > 0) && (
           <button
-            className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
-            title="Edit"
+            type="button"
+            aria-label="Edit message"
             onClick={onEditClick}
+            className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
           >
-            <Edit />
+            <Edit aria-hidden="true" />
           </button>
         )}
       </div>

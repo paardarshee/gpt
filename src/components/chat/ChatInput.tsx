@@ -1,4 +1,5 @@
 "use client";
+
 import { useStreamingAI } from "@/hooks/useStreamingAI";
 import { createUUID } from "@/lib/utils";
 import { useChatInputStore } from "@/store/chatInputStore";
@@ -9,25 +10,15 @@ type ChatInputProps = {
   chatId: string; // Unique identifier for the chat session
   setStreaming: (streaming: boolean) => void; // Function to update streaming state
 };
+
 /**
  * Chat input component: handles sending user messages, starting streaming, and rendering input UI.
- * @param chatId - Unique identifier for the chat session
- * @param setStreaming - Function to update streaming state
  */
 export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
   const { startStreaming } = useStreamingAI();
   const chatInput = useChatInputStore();
   const addMessage = useChatStore((s) => s.addMessage);
 
-  /**
-   * Handles sending a user message:
-   * 1. Adds user message to store
-   * 2. Clears input and attachments
-   * 3. Starts AI streaming
-   * 4. Appends assistant's response when streaming completes
-   *
-   * @returns  Resolves when message handling and streaming are complete
-   */
   const handleSend = async () => {
     if (!chatInput.input.trim()) return;
     const userMsgId = createUUID();
@@ -63,9 +54,16 @@ export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
   };
 
   return (
-    <div className="relative -top-7 bottom-0 w-full">
-      {/* Gradient overlay */}
-      <div className="to-bg-primary absolute -top-8 h-15 w-full bg-gradient-to-b from-transparent"></div>
+    <div
+      className="relative -top-7 bottom-0 w-full"
+      role="form"
+      aria-label="Chat input area"
+    >
+      {/* Decorative gradient overlay */}
+      <div
+        aria-hidden="true"
+        className="to-bg-primary absolute -top-8 h-15 w-full bg-gradient-to-b from-transparent"
+      ></div>
 
       <div className="relative mx-auto flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
         <NewChat
@@ -76,8 +74,13 @@ export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
           attachments={chatInput.attachments}
         />
       </div>
+
+      {/* Info note */}
       <div className="absolute -bottom-6 w-full">
-        <p className="text-center text-xs text-gray-500 dark:text-gray-400">
+        <p
+          role="note"
+          className="text-center text-xs text-gray-500 dark:text-gray-400"
+        >
           CloneGPT can make mistakes. Consider checking important information.
         </p>
       </div>

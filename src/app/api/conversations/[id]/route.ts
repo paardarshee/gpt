@@ -15,8 +15,6 @@ export async function GET(
   if (!session.userId) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-  console.log("Fetching messages for conversation:", conversationUUID);
-  console.log(conversationUUID, session.userId);
 
   const conversation = await Conversation.findOne({
     conversationId: conversationUUID,

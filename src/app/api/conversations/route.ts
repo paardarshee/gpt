@@ -13,7 +13,6 @@ export async function GET() {
   }).sort({
     updatedAt: -1,
   });
-  console.log(conversations);
 
   return NextResponse.json({ conversations });
 }

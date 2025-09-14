@@ -131,7 +131,6 @@ export const useConversations = ({
       if (!editText.trim()) return;
       setStreaming(true);
       const msgId = messages[index]?.msgId || "";
-      console.log(messages[index], msgId);
 
       deleteMessagesAfterIndex(chatId, index - 1);
       addMessage(chatId, { role: "user", content: editText });
