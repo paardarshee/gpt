@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Plus, Document } from "./SVG";
-import { Attachment as AttachmentType } from "@/store/chatStore";
+import { Plus, Document } from "@/components/ui/SVG";
+import { AttachmentType } from "@/types";
 
 type AttachmentsProps = {
   attachments: AttachmentType[];

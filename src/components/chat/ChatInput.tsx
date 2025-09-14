@@ -3,7 +3,7 @@ import { useStreamingAI } from "@/hooks/useStreamingAI";
 import { createUUID } from "@/lib/utils";
 import { useChatInputStore } from "@/store/chatInputStore";
 import { useChatStore } from "@/store/chatStore";
-import NewChat from "./NewChat";
+import NewChat from "@/components/ui/NewChat";
 
 type ChatInputProps = {
   chatId: string; // Unique identifier for the chat session
@@ -45,22 +45,13 @@ export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
     };
     chatInput.setInput("");
     chatInput.setAttachments([]);
-    console.log(
-      "Before streaming:",
-      useChatStore.getState().getMessages(chatId),
-    );
 
-    const aiText = await startStreaming(
-      userMsgId,
-      chatInputSnapshot.input,
-      chatId,
-      false,
-      chatInputSnapshot.attachments,
-    );
-    console.log(
-      "After streaming:",
-      useChatStore.getState().getMessages(chatId),
-    );
+    const aiText = await startStreaming({
+      msgId: userMsgId,
+      content: chatInputSnapshot.input,
+      conversationId: chatId,
+      attachments: chatInputSnapshot.attachments,
+    });
 
     setStreaming(false);
     if (aiText) {

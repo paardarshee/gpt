@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { Conversation } from "@/lib/models/Conversation";
-import { connectDB } from "@/lib/db";
+import { Conversation } from "@/lib/models/Conversation.model";
+import { connectDB } from "@/lib/server/db";
 import { auth } from "@clerk/nextjs/server";
 export async function GET() {
   const session = await auth();

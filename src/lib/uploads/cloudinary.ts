@@ -1,4 +1,4 @@
-import { AttachmentType } from "@/app/api/chat/route";
+import { AttachmentType } from "@/types";
 // your config path
 import { UploadApiResponse, UploadApiErrorResponse } from "cloudinary";
 

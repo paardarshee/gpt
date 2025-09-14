@@ -8,6 +8,7 @@ import Logo from "./Logo";
 import HamBurgerMenu from "./HamBurgerMenu";
 import Create from "./Create";
 import Document from "./Document";
+import TemporaryMessage from "./TemporaryMessage";
 
 export {
   Copy,
@@ -20,4 +21,5 @@ export {
   HamBurgerMenu,
   Create,
   Document,
+  TemporaryMessage,
 };

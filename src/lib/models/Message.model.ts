@@ -1,5 +1,5 @@
 // src/lib/models/Message.ts
-import { Schema, model, models, Types } from "mongoose";
+import { Schema, model, models, Types, Document } from "mongoose";
 
 const MessageSchema = new Schema(
   {
@@ -27,3 +27,14 @@ export async function getMessages(conversationId: Types.ObjectId) {
     { $sort: { updatedAt: -1 } },
   ]);
 }
+
+interface DBMessageType extends Document {
+  msgId: string;
+  conversationId: Types.ObjectId;
+  role: "user" | "assistant" | "system";
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type { DBMessageType };

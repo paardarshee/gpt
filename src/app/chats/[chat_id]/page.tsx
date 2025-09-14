@@ -1,8 +1,8 @@
 "use client";
 import { use, useState, useRef } from "react";
-import Conversations from "@/components/Conversations";
-import ChatInput from "@/components/ChatInput";
-import TopBar from "@/components/TopBar";
+import Conversations from "@/components/ui/Conversation";
+import ChatInput from "@/components/chat/ChatInput";
+import TopBar from "@/components/layout/TopBar";
 
 type ChatProps = {
   params: Promise<{ chat_id: string }>;

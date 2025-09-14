@@ -1,7 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
-import { Conversation } from "@/lib/models/Conversation";
-import { connectDB } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
+
+import { Conversation } from "@/lib/models/Conversation.model";
+import { connectDB } from "@/lib/server/db";
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },

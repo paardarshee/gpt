@@ -1,28 +1,22 @@
 import { create } from "zustand";
+import { AttachmentType } from "@/types";
 
-export interface Attachment {
-  _id?: string;
-  url: string;
-  filename: string;
-  fileType: "image" | "document";
-  size: number;
-}
 export interface NewChatPayload {
   input: string;
-  attachments: Attachment[];
+  attachments: AttachmentType[];
 }
 export interface Message {
   msgId?: string;
   role: "user" | "assistant";
   content: string;
-  attachments?: Attachment[];
+  attachments?: AttachmentType[];
 }
 
 export interface ChatState {
   // Pending new chat input
   newChatInput: NewChatPayload | null;
   isRedirected: boolean;
-  attachments: Attachment[];
+  attachments: AttachmentType[];
   // Conversations keyed by chatId
   conversations: Record<string, Message[]>;
 

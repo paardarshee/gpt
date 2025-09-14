@@ -41,21 +41,32 @@ const DynamicTextArea: React.FC<DynamicTextAreaProps> = ({
   };
 
   useEffect(() => {
+    let resizeTimer: NodeJS.Timeout;
+
     const updateMaxRows = () => {
       if (textareaRef.current) {
         const computedStyle = window.getComputedStyle(textareaRef.current);
         const lineHeight = parseFloat(computedStyle.lineHeight);
-
         const targetHeight = window.innerHeight * 0.3;
         const newMaxRows = Math.floor(targetHeight / lineHeight) || 1;
         setMaxRows(newMaxRows);
       }
     };
 
-    updateMaxRows();
-    window.addEventListener("resize", updateMaxRows);
-    return () => window.removeEventListener("resize", updateMaxRows);
-  });
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateMaxRows, 150); // only run after user stops resizing for 150ms
+    };
+
+    updateMaxRows(); // initial run
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     if (textareaRef.current) {
       const length = value.length;
@@ -64,6 +75,7 @@ const DynamicTextArea: React.FC<DynamicTextAreaProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMultiline]);
+
   return (
     <TextareaAutosize
       ref={textareaRef}

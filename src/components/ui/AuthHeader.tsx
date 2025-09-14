@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Create, Logo } from "@/components/SVG";
+import { Create, Logo } from "@/components/ui/SVG";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 /**
  * AuthHeader

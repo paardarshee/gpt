@@ -1,7 +1,9 @@
 "use client";
-import { Copy, Tick } from "./SVG";
+import { Copy, Tick } from "../ui/SVG";
 import React, { useState } from "react";
-import Markdown from "@/components/Markdown";
+import Markdown from "@/components/ui/Markdown";
+import { handleCopy } from "@/lib/utils";
+
 type AssistantChatProps = {
   msg: string; // Assistant message content
 };
@@ -15,15 +17,6 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
   /**
    * Handles copying the assistant's message to the clipboard.
    */
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(msg);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy text:", err);
-    }
-  };
   return (
     <div className="group flex w-full flex-col">
       {/* Chat bubble */}
@@ -39,7 +32,7 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
         <button
           className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
           title="Copy"
-          onClick={handleCopy}
+          onClick={() => handleCopy(setCopied, msg)}
         >
           {copied ? <Tick /> : <Copy />}
         </button>

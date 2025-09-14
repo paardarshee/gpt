@@ -1,12 +1,14 @@
 "use client";
-import { Attachment } from "@/store/chatStore";
-import { Copy, Edit, Tick } from "./SVG";
+import { AttachmentType } from "@/types";
+import { Copy, Edit, Tick } from "@/components/ui/SVG";
 import { useState } from "react";
-import Attachments from "@/components/Attachments";
+import Attachments from "@/components/chat/Attachments";
+import { handleCopy } from "@/lib/utils";
+
 type UserChatProps = {
   msg: string;
   onEditClick: () => void;
-  attachments: Attachment[];
+  attachments: AttachmentType[];
 };
 
 export default function UserChat({
@@ -16,15 +18,6 @@ export default function UserChat({
 }: UserChatProps) {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(msg);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy text:", err);
-    }
-  };
   return (
     <div className="group flex w-full flex-col gap-2">
       {/* Chat bubble */}
@@ -42,7 +35,7 @@ export default function UserChat({
         <button
           className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
           title="Copy"
-          onClick={handleCopy}
+          onClick={() => handleCopy(setCopied, msg)}
         >
           {copied ? <Tick /> : <Copy />}
         </button>

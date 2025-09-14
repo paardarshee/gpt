@@ -1,18 +1,10 @@
 // app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
-import Sidebar from "@/components/SideBar";
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-} from "@clerk/nextjs";
-import { Create, Logo } from "@/components/SVG";
-import TemporaryChat from "@/components/TemporaryChat";
-import Link from "next/link";
-import AuthHeader from "@/components/AuthHeader";
+import Sidebar from "@/components/layout/SideBar";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
+import TemporaryChat from "@/components/ui/TemporaryChat";
+import AuthHeader from "@/components/ui/AuthHeader";
 
 // ✅ Metadata should NOT connect to DB
 export const metadata: Metadata = {

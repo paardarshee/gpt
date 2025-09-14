@@ -5,9 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useChatStore } from "@/store/chatStore";
 import { createUUID } from "@/lib/utils";
 import { useChatInputStore } from "@/store/chatInputStore";
-import NewChat from "@/components/NewChat";
-import TopBar from "@/components/TopBar";
-import TemporaryChat from "@/components/TemporaryChat";
+import NewChat from "@/components/ui/NewChat";
+import TopBar from "@/components/layout/TopBar";
+import TemporaryChat from "@/components/ui/TemporaryChat";
 
 export default function NewChatPage() {
   const router = useRouter();

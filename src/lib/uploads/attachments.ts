@@ -1,11 +1,19 @@
 import { bulkUploadToCloudinary } from "@/lib/uploads/cloudinary";
-import { Attachment } from "@/lib/models/Attachment";
+import { Attachment } from "@/lib/models/Attachment.model";
+import { AttachmentType } from "@/types";
+import { Types } from "mongoose";
 
-export async function processAttachmentsAndStore(attachments, msgId) {
+export async function processAttachmentsAndStore(
+  attachments: AttachmentType[],
+  msgId: Types.ObjectId,
+) {
   if (!attachments || attachments.length === 0) return;
   // Keep the same behavior: run async, but expose as a function so route is not cluttered
   try {
-    const uploadResults = await bulkUploadToCloudinary(attachments, msgId);
+    const uploadResults = await bulkUploadToCloudinary(
+      attachments,
+      msgId.toString(),
+    );
     const attachmentsData = uploadResults
       .filter((r) => r.success)
       .map((r) => ({
