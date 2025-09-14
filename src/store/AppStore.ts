@@ -14,7 +14,7 @@ interface AppState {
 
 export const useAppStore = create<AppState>((set) => ({
   // Sidebar state
-  isSidebarOpen: true,
+  isSidebarOpen: false, // Open by default on desktop
   toggleSidebar: () =>
     set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
   setSidebarOpen: (open) => set({ isSidebarOpen: open }),

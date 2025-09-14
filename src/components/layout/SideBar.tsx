@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Menu, Logo, Create } from "./SVG";
+import { Plus, Menu, Logo, Create } from "../ui/SVG";
 import Link from "next/link";
 import { useConversationStore, Conversation } from "@/store/conversationStore";
 import { useAppStore } from "@/store/AppStore";
@@ -28,7 +28,6 @@ export default function Sidebar() {
     fetchConversations();
   }, [setConversations]);
 
-  // ✅ safer parsing
   const activeConversationId = pathname.startsWith("/chats/")
     ? pathname.split("/chats/")[1]?.split("/")[0]
     : null;

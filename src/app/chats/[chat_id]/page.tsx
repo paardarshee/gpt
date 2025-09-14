@@ -1,8 +1,8 @@
 "use client";
 import { use, useState, useRef } from "react";
-import Conversations from "@/components/chat/Conversations";
+import Conversations from "@/components/ui/Conversation";
 import ChatInput from "@/components/chat/ChatInput";
-import TopBar from "@/components/TopBar";
+import TopBar from "@/components/layout/TopBar";
 
 type ChatProps = {
   params: Promise<{ chat_id: string }>;
@@ -24,8 +24,17 @@ export default function ChatPage({ params }: ChatProps) {
   };
 
   return (
-    <div className="relative flex h-full flex-col">
-      <div ref={topBarRef} className="relative">
+    <div
+      className="relative flex h-full flex-col"
+      role="main"
+      aria-label={`Chat screen for conversation ${chat_id}`}
+    >
+      <div
+        ref={topBarRef}
+        className="relative"
+        role="banner"
+        aria-label="Chat top navigation bar"
+      >
         <TopBar />
       </div>
       <Conversations

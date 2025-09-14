@@ -1,125 +1,123 @@
 import { useState, useRef, useCallback } from "react";
-import { Attachment } from "@/store/chatStore";
+import { AttachmentType } from "@/types";
 
-// Hook for streaming AI
+type StreamEvent = { type: string; delta?: string };
+
+type BaseArgs = {
+  msgId: string;
+  content: string;
+};
+
+type EditArgs = BaseArgs & {
+  isEdit: true;
+};
+
+type NewMessageArgs = BaseArgs & {
+  isEdit?: false;
+  conversationId: string;
+  attachments?: AttachmentType[];
+  temporary?: boolean;
+};
+
+type StartStreamingArgs = EditArgs | NewMessageArgs;
+
+type RequestBody =
+  | {
+      msgId: string;
+      message: string;
+      conversationId: string;
+      attachments?: AttachmentType[];
+      temporary?: boolean;
+    }
+  | {
+      msgId: string;
+      message: string;
+    };
+
 export function useStreamingAI() {
-	const [streamingText, setStreamingText] = useState<string | null>(null);
-	const accumulatedTextRef = useRef("");
-	const bufferRef = useRef("");
+  const [streamingText, setStreamingText] = useState<string | null>(null);
+  const accumulatedTextRef = useRef("");
+  const bufferRef = useRef("");
 
-	const startStreaming = useCallback(
-		async (
-			msgId: string,
-			input: string,
-			conversationId: string,
-			isEdit = false,
-			attachments: Attachment[] = []
-		) => {
-			// Reset all state
-			setStreamingText("");
-			accumulatedTextRef.current = "";
-			bufferRef.current = "";
+  const processLine = (line: string) => {
+    const trimmed = line.trim();
+    if (!trimmed.startsWith("data:")) return;
 
-			const attachmentIds = attachments
-				.map((att) => att._id)
-				.filter((id): id is string => !!id);
-			try {
-				const res = await fetch("/api/chat", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						msgId,
-						message: input,
-						conversationId,
-						isEdit,
-						attachments: attachmentIds,
-					}),
-				});
+    const jsonStr = trimmed.replace(/^data:\s*/, "");
+    if (jsonStr === "[DONE]") return;
 
-				if (!res.body) {
-					setStreamingText(null);
-					return "";
-				}
+    try {
+      const event: StreamEvent = JSON.parse(jsonStr);
+      if (event.type === "text-delta" && event.delta) {
+        accumulatedTextRef.current += event.delta;
+        setStreamingText(accumulatedTextRef.current);
+      }
+    } catch (err) {
+      console.warn("Failed to parse JSON:", jsonStr, err);
+    }
+  };
 
-				const reader = res.body.getReader();
-				const decoder = new TextDecoder("utf-8");
+  const startStreaming = useCallback(async (args: StartStreamingArgs) => {
+    const { msgId, content } = args;
 
-				while (true) {
-					const { done, value } = await reader.read();
-					if (done) break;
+    setStreamingText("");
+    accumulatedTextRef.current = "";
+    bufferRef.current = "";
 
-					// Decode the chunk
-					const chunk = decoder.decode(value, { stream: true });
+    try {
+      let body: RequestBody;
+      let url = "/api/chat";
 
-					// Add to buffer (handles partial lines)
-					bufferRef.current += chunk;
+      if (args.isEdit) {
+        body = { msgId, message: content };
+        url = "/api/chat"; // or PUT endpoint
+      } else {
+        body = {
+          msgId,
+          message: content,
+          conversationId: args.conversationId,
+          attachments: args.attachments ?? [],
+          temporary: args.temporary ?? false,
+        };
+        if (args.temporary) url += "?temporary=true";
+      }
 
-					// Process complete lines
-					const lines = bufferRef.current.split("\n");
+      const res = await fetch(url, {
+        method: args.isEdit ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-					// Keep the last potentially incomplete line in buffer
-					bufferRef.current = lines.pop() || "";
+      if (!res.body) {
+        setStreamingText(null);
+        return "";
+      }
 
-					// Process each complete line
-					for (const line of lines) {
-						const trimmedLine = line.trim();
-						if (!trimmedLine.startsWith("data:")) continue;
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder("utf-8");
 
-						const jsonStr = trimmedLine.replace(/^data:\s*/, "");
-						if (jsonStr === "[DONE]") continue;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-						try {
-							const event = JSON.parse(jsonStr);
-							if (event.type === "text-delta" && event.delta) {
-								// Accumulate the text
-								accumulatedTextRef.current += event.delta;
-								// Update the streaming text with the full accumulated text
-								setStreamingText(accumulatedTextRef.current);
-							}
-						} catch (parseError) {
-							console.warn(
-								"Failed to parse streaming JSON:",
-								jsonStr,
-								parseError
-							);
-						}
-					}
-				}
+        bufferRef.current += decoder.decode(value, { stream: true });
+        const lines = bufferRef.current.split("\n");
+        bufferRef.current = lines.pop() || "";
 
-				// Process any remaining buffer content
-				if (bufferRef.current.trim()) {
-					const trimmedLine = bufferRef.current.trim();
-					if (trimmedLine.startsWith("data:")) {
-						const jsonStr = trimmedLine.replace(/^data:\s*/, "");
-						if (jsonStr !== "[DONE]") {
-							try {
-								const event = JSON.parse(jsonStr);
-								if (event.type === "text-delta" && event.delta) {
-									accumulatedTextRef.current += event.delta;
-									setStreamingText(accumulatedTextRef.current);
-								}
-							} catch (parseError) {
-								console.warn(
-									"Failed to parse final streaming JSON:",
-									jsonStr,
-									parseError
-								);
-							}
-						}
-					}
-				}
+        for (const line of lines) processLine(line);
+      }
 
-				const finalMessage = accumulatedTextRef.current;
-				setStreamingText(null);
-				return finalMessage;
-			} catch (error) {
-				console.error("Streaming error:", error);
-				setStreamingText(null);
-				return "";
-			}
-		},
-		[]
-	);
+      if (bufferRef.current) processLine(bufferRef.current);
 
-	return { streamingText, startStreaming };
+      const finalMessage = accumulatedTextRef.current;
+      setStreamingText(null);
+      return finalMessage;
+    } catch (error) {
+      console.error("Streaming error:", error);
+      setStreamingText(null);
+      return "";
+    }
+  }, []);
+
+  return { streamingText, startStreaming };
 }
