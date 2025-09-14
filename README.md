@@ -1,6 +1,3 @@
-Perfect! Based on your **detailed file structure**, I’ve generated a **clean, professional `README.md`** in Markdown format specifically for your project:
-
-```markdown
 # CloneGPT
 
 A **ChatGPT-like web application** built with **Next.js, TypeScript, Tailwind CSS, and MongoDB**, featuring AI-powered chat, message attachments, streaming responses, and temporary chats.
@@ -46,6 +43,7 @@ A **ChatGPT-like web application** built with **Next.js, TypeScript, Tailwind CS
 ---
 
 ## File Structure
+
 ```
 
 src/
@@ -115,17 +113,18 @@ src/
 │ └─ index.ts
 └─ middleware.ts
 
-````
+```
 
 ---
 
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/clonegpt.git
 cd clonegpt
-````
+```
 
 2. Install dependencies:
 
