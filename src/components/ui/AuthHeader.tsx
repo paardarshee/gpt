@@ -19,7 +19,7 @@ export default function AuthHeader() {
       {/* Logo link to home */}
       <Link
         href="/"
-        className="hover:bg-bg-tertiary group relative flex h-8 w-8 items-center justify-center rounded p-1"
+        className="hover:bg-icon-tertiary group relative flex h-8 w-8 items-center justify-center rounded p-1"
         aria-label="Go to home page"
       >
         <Logo className="h-6 w-6 group-hover:hidden" aria-hidden="true" />
@@ -30,7 +30,7 @@ export default function AuthHeader() {
       </Link>
 
       {/* Sign In / Sign Up */}
-      <nav
+      <div
         role="navigation"
         aria-label="Authentication actions"
         className="flex gap-2"
@@ -54,7 +54,7 @@ export default function AuthHeader() {
             Sign Up for free
           </button>
         </SignUpButton>
-      </nav>
+      </div>
     </header>
   );
 }

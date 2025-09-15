@@ -29,7 +29,7 @@ export default function TopBar() {
         {inChat || inTemporary ? (
           <Link
             href="/"
-            className="hover:bg-bg-tertiary flex items-center rounded-md p-2"
+            className="hover:bg-icon-tertiary flex items-center rounded-md p-2"
           >
             {inChat && <Create className="h-5 w-5" />}
             {inTemporary && <TemporaryMessage className="h-5 w-5" checked />}
@@ -37,7 +37,7 @@ export default function TopBar() {
         ) : (
           <Link
             href="/?temporary=true"
-            className="hover:bg-bg-tertiary flex items-center rounded-md p-2"
+            className="hover:bg-icon-tertiary flex items-center rounded-md p-2"
           >
             <TemporaryMessage className="h-5 w-5" checked={false} />
           </Link>

@@ -77,10 +77,7 @@ export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
 
       {/* Info note */}
       <div className="absolute -bottom-6 w-full">
-        <p
-          role="note"
-          className="text-center text-xs text-gray-500 dark:text-gray-400"
-        >
+        <p role="note" className="text-center text-xs">
           CloneGPT can make mistakes. Consider checking important information.
         </p>
       </div>

@@ -8,15 +8,15 @@
 
   --color-bg-primary: #fff;
   --color-bg-primary-inverted: #000;
-  --color-bg-secondary: #e8e8e8;
-  --color-bg-tertiary: #f3f3f3;
+  --color-bg-secondary: #f0f1f3;
+  --color-bg-tertiary: #f2f2f2;
   --color-bg-scrim: #0d0d0d80;
   --color-bg-elevated-primary: #fff;
   --color-bg-elevated-secondary: #f9f9f9;
   --color-bg-status-warning: #fff5f0;
   --color-bg-status-error: #fff0f0;
 
-  --color-border-default: #0d0d0d1a;
+  --color-border-default: #e3e3e3;
   --color-border-heavy: #0d0d0d26;
   --color-border-light: #0d0d0d0d;
   --color-border-status-warning: #ffe7d9;
@@ -31,8 +31,8 @@
   --color-text-status-error: #e02e2a;
 
   --color-icon-primary: #0d0d0d;
-  --color-icon-secondary: #5d5d5d;
-  --color-icon-tertiary: #8f8f8f;
+  --color-icon-secondary: #d1d5db;
+  --color-icon-tertiary: #e5e7eb;
   --color-icon-inverted: #fff;
   --color-icon-accent: #0285ff;
   --color-icon-status-warning: #e25507;
@@ -67,8 +67,8 @@
     --color-text-status-error: #ff8583;
 
     --color-icon-primary: #e8e8e8;
-    --color-icon-secondary: #cdcdcd;
-    --color-icon-tertiary: #afafaf;
+    --color-icon-secondary: #303030;
+    --color-icon-tertiary: #414141;
     --color-icon-inverted: #0d0d0d;
     --color-icon-accent: #66b5ff;
     --color-icon-status-warning: #ff9e6c;
@@ -93,11 +93,11 @@
   }
 
   .custom-scrollbar:hover {
-    scrollbar-color: var(--color-bg-tertiary) transparent;
+    scrollbar-color: var(--color-icon-tertiary) transparent;
   }
 
   .custom-scrollbar:hover ::-webkit-scrollbar-thumb {
-    background-color: var(--color-bg-tertiary);
+    background-color: var(--color-icon-tertiary);
   }
 
   .bottom-border::after {
