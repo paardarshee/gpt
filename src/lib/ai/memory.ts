@@ -7,21 +7,21 @@ export const mem = client;
 
 // Store a message in a chat conversation
 export async function storeMessage(
-  chatId: string,
+  userId: string,
   messages: Message[],
 ): Promise<void> {
   await mem.add(messages, {
-    run_id: `chat_${chatId}`,
+    run_id: userId,
   });
 }
 
-// Get last N messages for a chat
+// Get last N messages for a user conversation
 
 export async function getConversationContext(
-  chatId: string,
+  userId: string,
   limit: number = 20,
 ): Promise<Message[]> {
-  const response = await mem.getAll({ run_id: `chat_${chatId}`, limit });
+  const response = await mem.getAll({ run_id: `user_${userId}`, limit });
   const allMessages: Message[] = [];
   response.forEach((e) => {
     e.messages?.forEach((msg) => {
@@ -33,10 +33,10 @@ export async function getConversationContext(
 
 // Get context with token limit (context window handling)
 export async function getContextForModel(
-  chatId: string,
+  userId: string,
   limit: number = 20,
 ): Promise<string> {
-  const response = await mem.getAll({ run_id: `chat_${chatId}`, limit });
+  const response = await mem.getAll({ run_id: userId, limit });
   const context: string[] = [];
   response.forEach((e) => {
     context.push(e.memory as string);

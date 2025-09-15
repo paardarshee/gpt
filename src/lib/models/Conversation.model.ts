@@ -1,7 +1,15 @@
 // src/lib/models/Conversation.ts
 import { Document, Schema, model, models } from "mongoose";
 
-const ConversationSchema = new Schema(
+interface DBConversationType extends Document {
+  userId: string;
+  title: string;
+  conversationId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const ConversationSchema = new Schema<DBConversationType>(
   {
     userId: { type: String, required: true },
     title: { type: String },
@@ -11,14 +19,7 @@ const ConversationSchema = new Schema(
 );
 
 export const Conversation =
-  models.Conversation || model("Conversation", ConversationSchema);
-
-interface DBConversationType extends Document {
-  userId: string;
-  title: string;
-  conversationId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+  models.Conversation ||
+  model<DBConversationType>("Conversation", ConversationSchema);
 
 export type { DBConversationType };

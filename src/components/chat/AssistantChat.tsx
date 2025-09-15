@@ -24,7 +24,7 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
       {/* Chat bubble */}
       <div className="flex">
         <div
-          className="relative rounded-2xl py-2.5 break-words whitespace-pre-wrap text-gray-100"
+          className="relative rounded-2xl py-2.5 break-words whitespace-pre-wrap"
           role="document"
           aria-live="polite"
         >
@@ -33,10 +33,10 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
       </div>
 
       {/* Copy button */}
-      <div className="mt-1 flex gap-1 pr-1 text-sm text-gray-300 transition-opacity">
+      <div className="mt-1 flex gap-1 pr-1 text-sm transition-opacity">
         <button
           type="button"
-          className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
+          className="hover:bg-icon-secondary cursor-pointer rounded-lg p-1.5"
           aria-label={copied ? "Message copied to clipboard" : "Copy message"}
           aria-pressed={copied}
           title="Copy message"

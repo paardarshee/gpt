@@ -45,9 +45,7 @@ export default function RootLayout({
             {/* Signed In State */}
             <SignedIn>
               {/* Sidebar is navigation */}
-              <nav role="navigation" aria-label="Sidebar">
-                <Sidebar />
-              </nav>
+              <Sidebar />
 
               {/* Main content area */}
               <main

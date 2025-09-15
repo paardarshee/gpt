@@ -56,9 +56,7 @@ export default function ConversationPage(props: ConversationProps) {
             </div>
           ))}
           {streaming && !streamingText && (
-            <div className="animate-pulse text-gray-300">
-              Generating response ...
-            </div>
+            <div className="animate-pulse">Generating response ...</div>
           )}
           {streamingText && <AssistantChat msg={streamingText} />}
           <div ref={messagesEndRef} />

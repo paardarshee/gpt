@@ -70,7 +70,7 @@ export default function NewChat(props: NewChatProps) {
             <button
               type="button"
               aria-label="Add file"
-              className="hover:bg-bg-tertiary mr-2 flex h-10 w-10 items-center justify-center rounded-full focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="hover:bg-icon-tertiary mr-2 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none"
               onClick={handleAddFileClick}
             >
               <Plus aria-hidden="true" />
@@ -99,7 +99,7 @@ export default function NewChat(props: NewChatProps) {
               onClick={submitChat}
               disabled={!value.trim() || disabled}
               aria-label="Send message"
-              className="disabled:bg-bg-tertiary disabled:text-text-primary bg-bg-primary-inverted text-text-inverted flex h-10 w-10 items-center justify-center rounded-full transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-default"
+              className="disabled:bg-icon-tertiary disabled:text-text-primary bg-bg-primary-inverted text-text-inverted flex h-10 w-10 items-center justify-center rounded-full transition-colors focus:outline-none disabled:cursor-default"
             >
               <UpArrow aria-hidden="true" />
             </button>

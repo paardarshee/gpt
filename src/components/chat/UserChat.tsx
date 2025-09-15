@@ -50,7 +50,7 @@ export default function UserChat({
           type="button"
           aria-label={copied ? "Message copied" : "Copy message"}
           onClick={() => handleCopy(setCopied, msg)}
-          className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
+          className="hover:bg-icon-secondary cursor-pointer rounded-lg p-1.5"
         >
           {copied ? <Tick aria-hidden="true" /> : <Copy aria-hidden="true" />}
         </button>
@@ -60,7 +60,7 @@ export default function UserChat({
             type="button"
             aria-label="Edit message"
             onClick={onEditClick}
-            className="hover:bg-bg-secondary cursor-pointer rounded-lg p-1.5"
+            className="hover:bg-icon-secondary cursor-pointer rounded-lg p-1.5"
           >
             <Edit aria-hidden="true" />
           </button>

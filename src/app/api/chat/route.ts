@@ -3,7 +3,10 @@ export const runtime = "nodejs";
 import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { connectDB } from "@/lib/server/db";
-import { Conversation } from "@/lib/models/Conversation.model";
+import {
+  Conversation,
+  DBConversationType,
+} from "@/lib/models/Conversation.model";
 import { Message } from "@/lib/models/Message.model";
 import { withMongooseSession } from "@/lib/server/session";
 import { processAttachmentsAndStore } from "@/lib/uploads/attachments";
@@ -70,7 +73,7 @@ export async function POST(req: NextRequest) {
       }
     })();
   }
-  const result = await generateTextForMessage(createdMessage!);
+  const result = await generateTextForMessage(createdMessage!, userId);
   return result.toUIMessageStreamResponse();
 }
 
@@ -80,15 +83,31 @@ export async function PATCH(req: NextRequest) {
 
   await connectDB();
 
+  let conversation: DBConversationType | null = null;
   let messageToEdit: DBMessageType | null = null;
+
+  // Run inside session
   await withMongooseSession(async (session) => {
     messageToEdit = await Message.findOne({ msgId }).session(session);
     if (!messageToEdit) {
       throw new Error("Message not found");
     }
+
+    conversation = await Conversation.findOne({
+      _id: messageToEdit.conversationId,
+    }).session(session);
+
+    if (!conversation) {
+      throw new Error("Conversation not found");
+    }
+
     const oldMessageCreationTime = messageToEdit.createdAt;
+
+    // Update message content
     messageToEdit.content = message;
     await messageToEdit.save({ session });
+
+    // Delete all future messages created after this one
     await Message.deleteMany(
       {
         conversationId: messageToEdit.conversationId,
@@ -97,8 +116,12 @@ export async function PATCH(req: NextRequest) {
       { session },
     );
   });
-  // Delete all messages updated after this message creation time
 
-  const result = await generateTextForMessage(messageToEdit!);
+  // Generate new AI response
+  const result = await generateTextForMessage(
+    messageToEdit!,
+    (conversation! as DBConversationType).userId,
+  );
+
   return result.toUIMessageStreamResponse();
 }

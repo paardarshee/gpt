@@ -8,7 +8,10 @@ import { storeMessage } from "@/lib/ai/memory";
 import { connectDB } from "@/lib/server/db";
 import { DBMessageType } from "@/lib/models/Message.model";
 
-export async function generateTextForMessage(message: DBMessageType) {
+export async function generateTextForMessage(
+  message: DBMessageType,
+  userId: string = "anonymous",
+) {
   const model = getModel();
 
   if (!model) throw new Error("AI model not configured");
@@ -18,9 +21,11 @@ export async function generateTextForMessage(message: DBMessageType) {
   const conversation = await Conversation.findById(message.conversationId);
   if (!conversation) throw new Error("Conversation not found");
   let contextMessages = "";
-  if (process.env.NODE_ENV === "production") {
-    contextMessages = await getContextForModel(conversation._id.toString());
+  // if (process.env.NODE_ENV === "production") {
+  if (userId !== "anonymous") {
+    contextMessages = await getContextForModel(userId);
   }
+  // }
 
   const olderMessages = await Message.find({
     conversationId: conversation._id,
@@ -39,12 +44,14 @@ export async function generateTextForMessage(message: DBMessageType) {
     messages: convertToModelMessages(msgfromUI),
     onFinish: async ({ text }) => {
       try {
-        if (process.env.NODE_ENV === "production") {
-          await storeMessage(conversation._id.toString(), [
+        // if (process.env.NODE_ENV === "production") {
+        if (userId !== "anonymous") {
+          await storeMessage(userId, [
             { role: "user", content: message.content },
             { role: "assistant", content: text },
           ]);
         }
+        // }
         await Message.create({
           msgId: `reply_to_${message.msgId}`,
           conversationId: conversation._id,
