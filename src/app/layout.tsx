@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Sidebar from "@/components/layout/SideBar";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
-import TemporaryChat from "@/components/ui/TemporaryChat";
+import Temp from "@/components/ui/TempChat";
 import AuthHeader from "@/components/ui/AuthHeader";
 
 // ✅ Metadata should NOT connect to DB
@@ -21,7 +21,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          <div className="text-md text-text-primary bg-bg-primary flex h-screen max-h-screen w-screen max-w-screen flex-row overflow-hidden font-sans font-[400]">
+          <div className="text-md text-text-primary bg-bg-primary flex h-dvh max-h-dvh w-dvw max-w-dvw flex-row overflow-hidden font-sans font-[400] md:h-screen md:max-h-screen md:w-screen md:max-w-screen">
             {/* Signed Out State */}
             <SignedOut>
               <div
@@ -37,7 +37,7 @@ export default function RootLayout({
                   aria-label="Temporary chat area for guests"
                   className="flex-1 overflow-auto"
                 >
-                  <TemporaryChat />
+                  <Temp />
                 </main>
               </div>
             </SignedOut>

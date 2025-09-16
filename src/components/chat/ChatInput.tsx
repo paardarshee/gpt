@@ -76,7 +76,7 @@ export default function ChatInput({
       </div>
 
       {/* Info note */}
-      <div className="absolute -bottom-9 w-full md:-bottom-6">
+      <div className="text-text-tertiary absolute -bottom-9 w-full px-2 md:-bottom-6">
         <p role="note" className="text-center text-xs">
           CloneGPT can make mistakes. Consider checking important information.
         </p>

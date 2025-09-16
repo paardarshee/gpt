@@ -85,13 +85,7 @@ const DynamicTextArea: React.FC<DynamicTextAreaProps> = ({
       onChange={handleChange}
       onKeyDown={onKeyDown}
       placeholder={placeholder}
-      style={{
-        width: "100%",
-        fontSize: "18px",
-        padding: "8px 4px",
-        boxSizing: "border-box",
-      }}
-      className="resize-none border-0 outline-0"
+      className="box-border flex h-full w-full resize-none items-center justify-center border-0 px-1 py-2 outline-0"
     />
   );
 };
