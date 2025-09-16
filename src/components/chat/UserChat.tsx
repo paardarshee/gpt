@@ -20,7 +20,7 @@ export default function UserChat({
 
   return (
     <div
-      className="group flex w-full flex-col gap-2"
+      className="group mt-4 flex w-full flex-col gap-2"
       role="group"
       aria-label="User message"
     >

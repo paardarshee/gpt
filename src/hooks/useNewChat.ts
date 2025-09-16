@@ -15,17 +15,18 @@ export const useNewChat = ({
   handleSubmit,
   attachments,
   setAttachments,
+  streaming = false,
 }: UseNewChatProps) => {
   const fileInputRef = useRef<InstanceType<typeof UploadCtxProvider> | null>(
     null,
   );
   const [isMultiline, setIsMultiline] = useState(false);
-  const [disabled, setDisabled] = useState(false);
 
   const submitChat = async () => {
-    if (disabled || !value.trim()) return;
-    setDisabled(true);
-    await handleSubmit().finally(() => setDisabled(false));
+    console.log("submitChat called", { streaming, value });
+    if (streaming || !value.trim()) return;
+    setIsMultiline(false);
+    await handleSubmit();
   };
 
   const handleMultiLineChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -55,9 +56,7 @@ export const useNewChat = ({
         _id: file.uuid ?? "",
         url: file.cdnUrl ?? "",
         filename: file.fileInfo?.name ?? "unknown",
-        fileType: file.fileInfo?.mimeType?.startsWith("image/")
-          ? "image"
-          : "document",
+        fileType: file.fileInfo?.mimeType ?? "unknown",
         size: file.fileInfo?.size ?? 0,
       }));
     setAttachments([...attachments, ...attachmentsArray]);
@@ -65,7 +64,6 @@ export const useNewChat = ({
   return {
     isMultiline,
     setIsMultiline,
-    disabled,
     submitChat,
     handleMultiLineChange,
     handleKeyDown,

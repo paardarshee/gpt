@@ -1,38 +1,9 @@
 import { useState, useRef, useCallback } from "react";
-import { AttachmentType } from "@/types";
-
-type StreamEvent = { type: string; delta?: string };
-
-type BaseArgs = {
-  msgId: string;
-  content: string;
-};
-
-type EditArgs = BaseArgs & {
-  isEdit: true;
-};
-
-type NewMessageArgs = BaseArgs & {
-  isEdit?: false;
-  conversationId: string;
-  attachments?: AttachmentType[];
-  temporary?: boolean;
-};
-
-type StartStreamingArgs = EditArgs | NewMessageArgs;
-
-type RequestBody =
-  | {
-      msgId: string;
-      message: string;
-      conversationId: string;
-      attachments?: AttachmentType[];
-      temporary?: boolean;
-    }
-  | {
-      msgId: string;
-      message: string;
-    };
+import {
+  StreamingRequestBody,
+  StartStreamingArgs,
+  StreamEvent,
+} from "@/types/streaming";
 
 export function useStreamingAI() {
   const [streamingText, setStreamingText] = useState<string | null>(null);
@@ -65,7 +36,7 @@ export function useStreamingAI() {
     bufferRef.current = "";
 
     try {
-      let body: RequestBody;
+      let body: StreamingRequestBody;
       let url = "/api/chat";
 
       if (args.isEdit) {

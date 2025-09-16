@@ -12,7 +12,6 @@ export default function NewChat(props: NewChatProps) {
   const {
     isMultiline,
     setIsMultiline,
-    disabled,
     submitChat,
     handleMultiLineChange,
     handleKeyDown,
@@ -20,12 +19,12 @@ export default function NewChat(props: NewChatProps) {
     handleFileChange,
     fileInputRef,
   } = useNewChat(props);
-  const { attachments, value, setAttachments } = props;
+  const { attachments, value, setAttachments, streaming } = props;
 
   return (
     <div className="mx-auto w-full">
       <div
-        className="bg-bg-secondary shadow-border-default relative flex w-full flex-col rounded-4xl p-2 shadow-[0_0_0_0.2px] transition-all duration-300"
+        className="bg-bg-secondary shadow-border-default relative flex w-full flex-col rounded-[30px] p-2 shadow-[0_0_0_0.5px__var(--color-border-default)] transition-all duration-300"
         role="form"
         aria-label="New chat input form"
       >
@@ -97,7 +96,7 @@ export default function NewChat(props: NewChatProps) {
             <button
               type="button"
               onClick={submitChat}
-              disabled={!value.trim() || disabled}
+              disabled={!value.trim() || streaming || value.length > 1_00_00}
               aria-label="Send message"
               className="disabled:bg-icon-tertiary disabled:text-text-primary bg-bg-primary-inverted text-text-inverted flex h-10 w-10 items-center justify-center rounded-full transition-colors focus:outline-none disabled:cursor-default"
             >

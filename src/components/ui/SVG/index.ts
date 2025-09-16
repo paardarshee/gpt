@@ -9,11 +9,13 @@ import HamBurgerMenu from "./HamBurgerMenu";
 import Create from "./Create";
 import Document from "./Document";
 import TemporaryMessage from "./TemporaryMessage";
+import Options from "./Options";
 
 export {
   Copy,
   Edit,
   Tick,
+  Options,
   UpArrow,
   Plus,
   Menu,

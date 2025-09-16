@@ -48,12 +48,12 @@ export default function HomePage() {
       aria-label="CloneGPT home page"
     >
       {/* Input */}
-      <div>
-        <TopBar />
-      </div>
-      <div className="flex w-full flex-1 items-center justify-center px-4 py-4">
-        <div className="mx-auto w-full max-w-3xl">
-          <div className="text- mx-auto flex w-full justify-center p-2 text-2xl">
+      <TopBar />
+
+      <div className="h-[calc(50%-59px-128px)]"></div>
+      <div className="flex w-full items-center justify-center px-4 py-4">
+        <div className="relative mx-auto w-full">
+          <div className="mx-auto flex w-full justify-center p-2 text-2xl">
             Ready when You Are!
           </div>
           <section

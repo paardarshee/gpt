@@ -49,6 +49,8 @@ export async function POST(req: NextRequest) {
         )
       )[0];
     }
+    conversation.updatedAt = new Date();
+    await conversation.save({ session });
     const msgs = await Message.create(
       [
         {
@@ -73,7 +75,11 @@ export async function POST(req: NextRequest) {
       }
     })();
   }
-  const result = await generateTextForMessage(createdMessage!, userId);
+  const result = await generateTextForMessage(
+    createdMessage!,
+    userId,
+    attachments,
+  );
   return result.toUIMessageStreamResponse();
 }
 
