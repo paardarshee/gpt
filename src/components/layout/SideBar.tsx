@@ -1,18 +1,17 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Plus, Menu, Logo, Create, Options } from "../ui/SVG";
 import Link from "next/link";
 import { useConversationStore, Conversation } from "@/store/conversationStore";
 import { useAppStore } from "@/store/AppStore";
 import { usePathname } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
+import { useUser, UserButton, UserProfile } from "@clerk/nextjs";
 
 export default function Sidebar() {
   const { conversations, setConversations } = useConversationStore();
   const { isSidebarOpen, toggleSidebar } = useAppStore();
   const pathname = usePathname();
-  const { user } = useUser();
 
   useEffect(() => {
     if (window.innerWidth >= 768 && !isSidebarOpen) toggleSidebar(); // Ensure sidebar is open on desktop
@@ -30,10 +29,7 @@ export default function Sidebar() {
     fetchConversations();
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setConversations]);
-  useEffect(() => {
-    if (!user) return;
-    console.log(user);
-  }, [user]);
+
   const activeConversationId = pathname.startsWith("/chats/")
     ? pathname.split("/chats/")[1]?.split("/")[0]
     : null;
@@ -98,12 +94,26 @@ const SideBarComponent = ({
   toggleSidebar,
   forMobile = false,
 }: SideBarProps) => {
+  const { user } = useUser();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrollable, setIsScrollable] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const userButtonRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollTop = e.currentTarget.scrollTop;
-    setIsScrolled(scrollTop > 0);
-  };
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const updateScrollState = () => {
+      setIsScrolled(el.scrollTop > 0);
+      setIsScrollable(el.scrollHeight > el.clientHeight);
+    };
+
+    updateScrollState();
+    el.addEventListener("scroll", updateScrollState);
+
+    return () => el.removeEventListener("scroll", updateScrollState);
+  }, [conversations, open]);
   return (
     <div
       className={`${
@@ -112,8 +122,9 @@ const SideBarComponent = ({
           : "group bg-bg-primary w-[58px] md:cursor-e-resize"
       } custom-scrollbar relative flex h-screen flex-col text-sm font-[300] shadow-[0.5px_0_0_0_var(--color-border-default)] transition-all duration-200`}
       onClick={!open ? toggleSidebar : undefined}
-      onScroll={handleScroll}
+      // onScroll={handleScroll}
       aria-label="Sidebar with chat conversations"
+      ref={scrollRef}
     >
       {/* Header */}
       <div
@@ -172,6 +183,8 @@ const SideBarComponent = ({
       </div>
 
       {/* Chats */}
+      {!open && <div className="flex-1" />}
+
       {open && (
         <>
           <span className="text-text-tertiary px-4.5">Chats</span>
@@ -201,6 +214,18 @@ const SideBarComponent = ({
           </div>
         </>
       )}
+      <div
+        className={`sticky bottom-0 z-10 flex cursor-pointer items-center gap-1.5 rounded-lg p-2 ${open && "bg-[#F9F9F9] dark:bg-[#161616]"} px-3 py-2.5`}
+      >
+        {isScrollable && (
+          <div className="bg-border-default pointer-events-none absolute inset-x-0 top-0 h-[0.4px]" />
+        )}
+        <UserButton />
+
+        {open && user && (
+          <div className="max-w-[70%] truncate text-sm">{user.fullName}</div>
+        )}
+      </div>
     </div>
   );
 };

@@ -2,7 +2,6 @@
 
 import { useUser } from "@clerk/nextjs";
 import TopBar from "@/components/layout/TopBar";
-import NewChat from "./NewChat";
 import Conversations from "./Conversation";
 import ChatInput from "@/components/chat/ChatInput";
 import { useTemporaryChat } from "@/hooks/useTemporaryChat";
