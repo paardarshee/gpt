@@ -1,6 +1,5 @@
 "use client";
 
-import { useStreamingAI } from "@/hooks/useStreamingAI";
 import { createUUID } from "@/lib/utils";
 import { useChatInputStore } from "@/store/chatInputStore";
 import { useChatStore } from "@/store/chatStore";

@@ -24,7 +24,7 @@ export default function NewChat(props: NewChatProps) {
   return (
     <div className="mx-auto w-full">
       <div
-        className="bg-bg-secondary shadow-border-default relative flex w-full flex-col rounded-4xl p-2 shadow-[0_0_0_0.2px] transition-all duration-300"
+        className="bg-bg-secondary shadow-border-default relative flex w-full flex-col rounded-[30px] p-2 shadow-[0_0_0_0.5px__var(--color-border-default)] transition-all duration-300"
         role="form"
         aria-label="New chat input form"
       >

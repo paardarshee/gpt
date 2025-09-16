@@ -49,6 +49,8 @@ export async function POST(req: NextRequest) {
         )
       )[0];
     }
+    conversation.updatedAt = new Date();
+    await conversation.save({ session });
     const msgs = await Message.create(
       [
         {

@@ -88,7 +88,7 @@ const DynamicTextArea: React.FC<DynamicTextAreaProps> = ({
       style={{
         width: "100%",
         fontSize: "18px",
-        padding: "8px",
+        padding: "8px 4px",
         boxSizing: "border-box",
       }}
       className="resize-none border-0 outline-0"

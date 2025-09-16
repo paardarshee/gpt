@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { Message } from "@/lib/models/Message.model";
 import { Conversation } from "@/lib/models/Conversation.model";
 import { connectDB } from "@/lib/server/db";
+import { withMongooseSession } from "@/lib/server/session";
 
 export async function GET(
   req: NextRequest,
@@ -44,4 +45,34 @@ export async function GET(
   ]);
 
   return NextResponse.json(messages);
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id: conversationUUID } = await params;
+  await connectDB();
+  const session = await auth();
+  if (!session.userId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const conversation = await Conversation.findOne({
+    conversationId: conversationUUID,
+    userId: session.userId,
+  });
+  if (!conversation) {
+    return NextResponse.json(
+      { message: "Conversation not found" },
+      { status: 404 },
+    );
+  }
+  const id = conversation._id;
+  await withMongooseSession(async (session) => {
+    await Message.deleteMany({ conversationId: id }, { session });
+    await Conversation.deleteOne({ _id: id }, { session });
+  });
+
+  return NextResponse.json({ message: "Conversation deleted" });
 }

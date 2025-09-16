@@ -60,9 +60,9 @@ export default function ConversationPage(props: ConversationProps) {
               )}
             </div>
           ))}
-          {streamingText && <AssistantChat msg={streamingText} last={true} />}
+          {streamingText && <AssistantChat msg={streamingText} />}
           {streaming && !streamingText && (
-            <div className="bg-bg-primary-inverted h-3 w-3 animate-pulse rounded-full"></div>
+            <div className="bg-bg-primary-inverted mb-8 h-3 w-3 animate-pulse rounded-full"></div>
           )}
           <div ref={messagesEndRef} />
         </div>

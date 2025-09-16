@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Menu, Logo, Create } from "../ui/SVG";
+import { Plus, Menu, Logo, Create, Options } from "../ui/SVG";
 import Link from "next/link";
 import { useConversationStore, Conversation } from "@/store/conversationStore";
 import { useAppStore } from "@/store/AppStore";
@@ -181,11 +181,14 @@ const SideBarComponent = ({
                   onClick={() => forMobile && toggleSidebar()}
                 >
                   <div
-                    className={`my-1 cursor-pointer overflow-hidden rounded-lg px-3 py-2 text-ellipsis whitespace-nowrap ${
+                    className={`items-row group/title my-1 flex cursor-pointer justify-between overflow-hidden rounded-lg px-3 py-2 text-ellipsis whitespace-nowrap ${
                       isActive ? "bg-bg-secondary" : "hover:bg-bg-tertiary"
                     }`}
                   >
                     {conv.title}
+                    <span className="hidden group-hover/title:block">
+                      <Options className="h-5 w-5" />
+                    </span>
                   </div>
                 </Link>
               );
