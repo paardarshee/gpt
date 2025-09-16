@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useChatStore } from "@/store/chatStore";
 import { useConversationStore } from "@/store/conversationStore";
-import { useStreamingAI } from "@/hooks/useStreamingAI";
 import { createUUID } from "@/lib/utils";
 import { useShallow } from "zustand/react/shallow";
 import type { Conversation } from "@/store/conversationStore";
@@ -15,8 +14,9 @@ export const useConversations = ({
   setStreaming,
   handleAddBorder,
   streaming,
+  streamingText,
+  startStreaming,
 }: ConversationProps) => {
-  const { streamingText, startStreaming } = useStreamingAI();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -62,6 +62,7 @@ export const useConversations = ({
       const newChatInput = getNewChatInput();
       if (!isRedirected || !newChatInput) return;
 
+      setStreaming(true);
       const msgId = createUUID();
       addMessage(chatId, {
         role: "user",
@@ -69,8 +70,6 @@ export const useConversations = ({
         content: newChatInput.input,
         attachments: newChatInput.attachments,
       });
-
-      setStreaming(true);
 
       const aiText = await startStreaming({
         msgId,

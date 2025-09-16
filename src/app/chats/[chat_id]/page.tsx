@@ -3,12 +3,14 @@ import { use, useState, useRef } from "react";
 import Conversations from "@/components/ui/Conversation";
 import ChatInput from "@/components/chat/ChatInput";
 import TopBar from "@/components/layout/TopBar";
+import { useStreamingAI } from "@/hooks/useStreamingAI";
 
 type ChatProps = {
   params: Promise<{ chat_id: string }>;
 };
 
 export default function ChatPage({ params }: ChatProps) {
+  const { streamingText, startStreaming } = useStreamingAI();
   const { chat_id } = use(params);
   const [streaming, setStreaming] = useState(false);
   const topBarRef = useRef<HTMLDivElement>(null);
@@ -26,7 +28,7 @@ export default function ChatPage({ params }: ChatProps) {
   return (
     <div
       className="relative flex h-full flex-col"
-      role="main"
+      role="document"
       aria-label={`Chat screen for conversation ${chat_id}`}
     >
       <div
@@ -42,8 +44,16 @@ export default function ChatPage({ params }: ChatProps) {
         streaming={streaming}
         setStreaming={setStreaming}
         handleAddBorder={handleAddBorder}
+        streamingText={streamingText}
+        startStreaming={startStreaming}
       />
-      <ChatInput chatId={chat_id} setStreaming={setStreaming} />
+      <ChatInput
+        chatId={chat_id}
+        setStreaming={setStreaming}
+        streaming={streaming}
+        streamingText={streamingText}
+        startStreaming={startStreaming}
+      />
     </div>
   );
 }

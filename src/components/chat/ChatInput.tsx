@@ -5,17 +5,17 @@ import { createUUID } from "@/lib/utils";
 import { useChatInputStore } from "@/store/chatInputStore";
 import { useChatStore } from "@/store/chatStore";
 import NewChat from "@/components/ui/NewChat";
-
-type ChatInputProps = {
-  chatId: string; // Unique identifier for the chat session
-  setStreaming: (streaming: boolean) => void; // Function to update streaming state
-};
+import { ChatInputProps } from "@/types/chat";
 
 /**
  * Chat input component: handles sending user messages, starting streaming, and rendering input UI.
  */
-export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
-  const { startStreaming } = useStreamingAI();
+export default function ChatInput({
+  chatId,
+  setStreaming,
+  streaming,
+  startStreaming,
+}: ChatInputProps) {
   const chatInput = useChatInputStore();
   const addMessage = useChatStore((s) => s.addMessage);
 
@@ -55,14 +55,14 @@ export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
 
   return (
     <div
-      className="relative -top-7 bottom-0 w-full"
+      className="relative -top-10 bottom-0 w-full md:-top-8"
       role="form"
       aria-label="Chat input area"
     >
       {/* Decorative gradient overlay */}
       <div
         aria-hidden="true"
-        className="to-bg-primary absolute -top-8 h-15 w-full bg-gradient-to-b from-transparent"
+        className="to-bg-primary absolute -top-5 h-15 w-full bg-gradient-to-b from-transparent md:-top-7"
       ></div>
 
       <div className="relative mx-auto flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
@@ -72,11 +72,12 @@ export default function ChatInput({ chatId, setStreaming }: ChatInputProps) {
           handleSubmit={handleSend}
           setAttachments={chatInput.setAttachments}
           attachments={chatInput.attachments}
+          streaming={streaming}
         />
       </div>
 
       {/* Info note */}
-      <div className="absolute -bottom-6 w-full">
+      <div className="absolute -bottom-9 w-full md:-bottom-6">
         <p role="note" className="text-center text-xs">
           CloneGPT can make mistakes. Consider checking important information.
         </p>

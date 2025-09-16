@@ -22,6 +22,8 @@ export default function TemporaryChat() {
     handleSubmit,
     setStreaming,
     chatInput,
+    streamingText,
+    startStreaming,
   } = useTemporaryChat();
 
   const { isSignedIn } = useUser();
@@ -42,11 +44,20 @@ export default function TemporaryChat() {
           streaming={streaming}
           setStreaming={setStreaming}
           handleAddBorder={handleAddBorder}
+          startStreaming={startStreaming}
+          streamingText={streamingText}
           temporary
           aria-label="Conversation messages"
         />
 
-        <ChatInput chatId={chatId} setStreaming={setStreaming} />
+        <ChatInput
+          chatId={chatId}
+          setStreaming={setStreaming}
+          streaming={streaming}
+          startStreaming={startStreaming}
+          streamingText={streamingText}
+          aria-label="Chat input"
+        />
       </div>
     );
   }

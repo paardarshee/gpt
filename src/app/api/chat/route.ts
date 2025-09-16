@@ -73,7 +73,11 @@ export async function POST(req: NextRequest) {
       }
     })();
   }
-  const result = await generateTextForMessage(createdMessage!, userId);
+  const result = await generateTextForMessage(
+    createdMessage!,
+    userId,
+    attachments,
+  );
   return result.toUIMessageStreamResponse();
 }
 

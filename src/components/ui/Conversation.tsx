@@ -31,7 +31,7 @@ export default function ConversationPage(props: ConversationProps) {
       aria-label="Chat conversation messages"
     >
       <div className="mx-auto mb-6 flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8">
-        <div className="flex grow flex-col gap-6">
+        <div className="flex grow flex-col">
           {messages.map((m, i) => (
             <div key={i} className="flex items-start gap-4 leading-relaxed">
               {m.role === "user" &&
@@ -52,13 +52,18 @@ export default function ConversationPage(props: ConversationProps) {
                     attachments={m.attachments || []}
                   />
                 ))}
-              {m.role === "assistant" && <AssistantChat msg={m.content} />}
+              {m.role === "assistant" && (
+                <AssistantChat
+                  msg={m.content}
+                  last={i === messages.length - 1}
+                />
+              )}
             </div>
           ))}
+          {streamingText && <AssistantChat msg={streamingText} last={true} />}
           {streaming && !streamingText && (
-            <div className="animate-pulse">Generating response ...</div>
+            <div className="bg-bg-primary-inverted h-3 w-3 animate-pulse rounded-full"></div>
           )}
-          {streamingText && <AssistantChat msg={streamingText} />}
           <div ref={messagesEndRef} />
         </div>
       </div>

@@ -21,7 +21,7 @@ export default function TopBar() {
         >
           <HamBurgerMenu className="h-6 w-6" />
         </button>
-        <span className="text-lg md:pl-2">ChatGPT</span>
+        <span className="text-lg md:pl-2">CloneGPT</span>
       </div>
 
       {/* New Chat */}

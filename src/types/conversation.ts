@@ -1,4 +1,5 @@
 import { DBConversationType } from "@/lib/models/Conversation.model";
+import { StartStreamingArgs } from "./streaming";
 
 export interface ConversationResponse {
   success: boolean;
@@ -18,4 +19,6 @@ export type ConversationProps = {
   setStreaming: (streaming: boolean) => void;
   handleAddBorder: (add: boolean) => void;
   temporary?: boolean;
+  streamingText: string | null;
+  startStreaming: (args: StartStreamingArgs) => Promise<string>;
 };

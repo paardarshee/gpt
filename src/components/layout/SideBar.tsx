@@ -27,6 +27,7 @@ export default function Sidebar() {
     };
 
     fetchConversations();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setConversations]);
 
   const activeConversationId = pathname.startsWith("/chats/")

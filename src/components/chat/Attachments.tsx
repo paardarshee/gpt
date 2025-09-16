@@ -38,7 +38,7 @@ export default function Attachments({
           aria-label={`Attachment: ${attachment.filename}`}
           className="relative inline-flex w-fit items-center"
         >
-          {attachment.fileType === "image" ? (
+          {attachment.fileType.startsWith("image") ? (
             <div
               className={`relative ${
                 isEditable

@@ -6,13 +6,17 @@ import { handleCopy } from "@/lib/utils";
 
 type AssistantChatProps = {
   msg: string; // Assistant message content
+  last?: boolean;
 };
 
 /**
  * Renders assistant message with Markdown and a copy-to-clipboard button.
  * Accessible for screen readers.
  */
-export default function AssistantChat({ msg }: AssistantChatProps) {
+export default function AssistantChat({
+  msg,
+  last = false,
+}: AssistantChatProps) {
   const [copied, setCopied] = useState(false);
 
   return (
@@ -24,14 +28,13 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
       {/* Chat bubble */}
       <div className="flex">
         <div
-          className="relative rounded-2xl py-2.5 break-words whitespace-pre-wrap"
+          className="relative rounded-2xl break-words whitespace-pre-wrap"
           role="document"
           aria-live="polite"
         >
           <Markdown content={msg} />
         </div>
       </div>
-
       {/* Copy button */}
       <div className="mt-1 flex gap-1 pr-1 text-sm transition-opacity">
         <button
@@ -45,6 +48,7 @@ export default function AssistantChat({ msg }: AssistantChatProps) {
           {copied ? <Tick aria-hidden="true" /> : <Copy aria-hidden="true" />}
         </button>
       </div>
+      {last && <div className="h-8" />} {/* Extra margin for last message */}
     </div>
   );
 }
