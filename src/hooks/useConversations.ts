@@ -131,7 +131,7 @@ export const useConversations = ({
     const msgId = messages[index]?.msgId || "";
 
     deleteMessagesFromIndex(chatId, index);
-    addMessage(chatId, { role: "user", content: editText });
+    addMessage(chatId, { msgId, role: "user", content: editText });
 
     setEditingIndex(null);
     setEditText("");
