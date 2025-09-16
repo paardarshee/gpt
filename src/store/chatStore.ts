@@ -69,7 +69,7 @@ export const useChatStore = create<ChatState>((set) => ({
       return {
         conversations: {
           ...state.conversations,
-          [chatId]: msgs.slice(0, index + 1),
+          [chatId]: msgs.slice(0, index),
         },
       };
     }),
