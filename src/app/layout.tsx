@@ -51,7 +51,7 @@ export default function RootLayout({
               <main
                 role="main"
                 aria-label="Main chat content"
-                className="h-screen flex-1 overflow-auto"
+                className="h-dvh flex-1 overflow-auto md:h-screen"
               >
                 {children}
               </main>

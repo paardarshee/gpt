@@ -50,7 +50,7 @@ export default function Sidebar() {
 
         {/* Sliding Sidebar */}
         <div
-          className={`fixed top-0 left-0 z-50 h-screen transform transition-transform duration-300 ease-in-out ${
+          className={`fixed top-0 left-0 z-50 h-dvh transform transition-transform duration-300 ease-in-out md:h-screen ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -120,7 +120,7 @@ const SideBarComponent = ({
         open
           ? "w-[259px] overflow-y-auto bg-[#F9F9F9] [scrollbar-gutter:stable] dark:bg-[#161616]"
           : "group bg-bg-primary w-[58px] md:cursor-e-resize"
-      } custom-scrollbar relative flex h-screen flex-col text-sm font-[300] shadow-[0.5px_0_0_0_var(--color-border-default)] transition-all duration-200`}
+      } custom-scrollbar relative flex h-dvh flex-col text-sm font-[300] shadow-[0.5px_0_0_0_var(--color-border-default)] transition-all duration-200 md:h-screen`}
       onClick={!open ? toggleSidebar : undefined}
       // onScroll={handleScroll}
       aria-label="Sidebar with chat conversations"
