@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
       )[0];
     }
     conversation.updatedAt = new Date();
+
     await conversation.save({ session });
     const msgs = await Message.create(
       [
@@ -83,7 +84,7 @@ export async function POST(req: NextRequest) {
   return result.toUIMessageStreamResponse();
 }
 
-export async function PATCH(req: NextRequest) {
+export async function PUT(req: NextRequest) {
   const { msgId, message }: { msgId: string; message: string } =
     await req.json();
 

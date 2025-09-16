@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 export default function TopBar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const inChat = pathname.startsWith("/chat/");
+  const inChat = pathname.startsWith("/chats/");
   const inTemporary = searchParams.get("temporary") === "true";
   const { toggleSidebar } = useAppStore();
   return (
@@ -21,7 +21,7 @@ export default function TopBar() {
         >
           <HamBurgerMenu className="h-6 w-6" />
         </button>
-        <span className="text-lg md:pl-2">CloneGPT</span>
+        <span className="pl-2.5 text-lg">CloneGPT</span>
       </div>
 
       {/* New Chat */}

@@ -78,6 +78,9 @@
 
 @layer base {
   /* Firefox */
+  html {
+    background-color: var(--color-bg-primary);
+  }
   .custom-scrollbar {
     scrollbar-color: var(--color-bg-secondary) transparent; /* thumb + transparent track */
   }

@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Plus, Menu, Logo, Create, Options } from "../ui/SVG";
 import Link from "next/link";
 import { useConversationStore, Conversation } from "@/store/conversationStore";
 import { useAppStore } from "@/store/AppStore";
 import { usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function Sidebar() {
   const { conversations, setConversations } = useConversationStore();
   const { isSidebarOpen, toggleSidebar } = useAppStore();
   const pathname = usePathname();
+  const { user } = useUser();
 
   useEffect(() => {
     if (window.innerWidth >= 768 && !isSidebarOpen) toggleSidebar(); // Ensure sidebar is open on desktop
@@ -25,11 +27,13 @@ export default function Sidebar() {
         console.error(error);
       }
     };
-
     fetchConversations();
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setConversations]);
-
+  useEffect(() => {
+    if (!user) return;
+    console.log(user);
+  }, [user]);
   const activeConversationId = pathname.startsWith("/chats/")
     ? pathname.split("/chats/")[1]?.split("/")[0]
     : null;
@@ -170,7 +174,7 @@ const SideBarComponent = ({
       {/* Chats */}
       {open && (
         <>
-          <span className="text-text-tertiary px-3">Chats</span>
+          <span className="text-text-tertiary px-4.5">Chats</span>
           <div className="flex-1 px-1.5">
             {conversations.map((conv) => {
               const isActive = conv.conversationId === activeConversationId;
@@ -181,12 +185,13 @@ const SideBarComponent = ({
                   onClick={() => forMobile && toggleSidebar()}
                 >
                   <div
-                    className={`items-row group/title my-1 flex cursor-pointer justify-between overflow-hidden rounded-lg px-3 py-2 text-ellipsis whitespace-nowrap ${
+                    className={`group/title flex w-full cursor-pointer items-center justify-between overflow-hidden rounded-lg px-3 py-2 ${
                       isActive ? "bg-bg-secondary" : "hover:bg-bg-tertiary"
                     }`}
                   >
-                    {conv.title}
-                    <span className="hidden group-hover/title:block">
+                    <span className="flex-1 truncate">{conv.title}</span>
+
+                    <span className="hidden flex-shrink-0 group-hover/title:block">
                       <Options className="h-5 w-5" />
                     </span>
                   </div>

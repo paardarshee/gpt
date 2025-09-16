@@ -23,7 +23,6 @@ export const useNewChat = ({
   const [isMultiline, setIsMultiline] = useState(false);
 
   const submitChat = async () => {
-    console.log("submitChat called", { streaming, value });
     if (streaming || !value.trim()) return;
     setIsMultiline(false);
     await handleSubmit();

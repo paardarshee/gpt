@@ -21,7 +21,7 @@ export default function AssistantChat({
 
   return (
     <div
-      className="group flex w-full flex-col"
+      className="group mt-2 flex w-full flex-col"
       role="article"
       aria-label="Assistant message"
     >

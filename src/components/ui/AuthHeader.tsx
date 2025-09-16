@@ -13,7 +13,7 @@ export default function AuthHeader() {
   return (
     <header
       role="banner"
-      className="flex h-16 w-full items-center justify-between p-2 font-[500]"
+      className="flex h-16 w-full items-center justify-between px-3.5 py-2 font-[500]"
       aria-label="Authentication Header"
     >
       {/* Logo link to home */}
@@ -33,7 +33,7 @@ export default function AuthHeader() {
       <div
         role="navigation"
         aria-label="Authentication actions"
-        className="flex gap-2"
+        className="flex items-center gap-2"
       >
         {/* Sign In */}
         <SignInButton mode="modal">
@@ -48,7 +48,7 @@ export default function AuthHeader() {
         {/* Sign Up */}
         <SignUpButton mode="modal">
           <button
-            className="border-border-default text-text-primary hover:bg-bg-secondary cursor-pointer rounded-full border px-3 py-1 transition"
+            className="border-border-default text-text-primary hover:bg-bg-secondary box-border cursor-pointer rounded-full border px-3 py-1 transition"
             aria-label="Sign up for free"
           >
             Sign Up for free

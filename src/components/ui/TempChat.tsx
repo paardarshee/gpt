@@ -1,31 +1,19 @@
 //root_page.tsx
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { useChatStore } from "@/store/chatStore";
-import { createUUID } from "@/lib/utils";
 import { useChatInputStore } from "@/store/chatInputStore";
 import NewChat from "@/components/ui/NewChat";
-import TopBar from "@/components/layout/TopBar";
 import TemporaryChat from "@/components/ui/TemporaryConversation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function HomePage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+export default function TempChatPage() {
   const setNewChatInput = useChatStore((s) => s.setNewChatInput);
   const setRedirected = useChatStore((s) => s.setRedirected);
   const chatInput = useChatInputStore();
   const [temporaryMode, setTemporaryMode] = useState(false);
-  const temporary = searchParams.get("temporary") === "true";
-  useEffect(() => {
-    if (!temporary) setTemporaryMode(false);
-  }, [temporary]);
   const handleSubmit = async () => {
     if (!chatInput.input.trim()) return;
-
-    // 1. Create a new chat ID
-    const chatId = createUUID();
 
     // 2. Save input + redirect flag in store
     setNewChatInput({
@@ -37,12 +25,7 @@ export default function HomePage() {
     chatInput.clearInput();
     chatInput.clearAttachments();
     setRedirected(true);
-    if (temporary) {
-      setTemporaryMode(true);
-      return;
-    }
-    // 3. Go to chat page
-    else router.push(`/chats/${chatId}`);
+    setTemporaryMode(true);
   };
 
   if (temporaryMode) {
@@ -55,14 +38,10 @@ export default function HomePage() {
       aria-label="CloneGPT home page"
     >
       {/* Input */}
-      <TopBar />
 
-      <div className="h-[calc(50%-59px-128px)]"></div>
+      <div className="h-[calc(50%-69px)]"></div>
       <div className="flex w-full items-center justify-center px-4 py-4">
         <div className="relative mx-auto w-full">
-          <div className="mx-auto flex w-full justify-center p-3 text-2xl">
-            {temporary ? "Temporary Chat" : "Ready when You Are!"}
-          </div>
           <section
             aria-label="Chat input section"
             className="relative mx-auto flex items-center px-4 sm:max-w-2xl sm:px-6 xl:max-w-4xl xl:px-8"

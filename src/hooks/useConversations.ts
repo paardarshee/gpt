@@ -26,8 +26,8 @@ export const useConversations = ({
   const isRedirected = useChatStore((s) => s.isRedirected);
   const setRedirected = useChatStore((s) => s.setRedirected);
   const addMessage = useChatStore((s) => s.addMessage);
-  const deleteMessagesAfterIndex = useChatStore(
-    (s) => s.deleteMessagesAfterIndex,
+  const deleteMessagesFromIndex = useChatStore(
+    (s) => s.deleteMessagesFromIndex,
   );
   const messages = useChatStore(
     useShallow((s) => s.conversations[chatId] || []),
@@ -125,37 +125,28 @@ export const useConversations = ({
     if (!temporary) loadConversation();
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId, isRedirected]);
-  const handleEditSend = useCallback(
-    async (index: number) => {
-      if (!editText.trim()) return;
-      setStreaming(true);
-      const msgId = messages[index]?.msgId || "";
+  const handleEditSend = async (index: number) => {
+    if (!editText.trim()) return;
+    setStreaming(true);
+    const msgId = messages[index]?.msgId || "";
 
-      deleteMessagesAfterIndex(chatId, index - 1);
-      addMessage(chatId, { role: "user", content: editText });
+    deleteMessagesFromIndex(chatId, index);
+    addMessage(chatId, { role: "user", content: editText });
 
-      setEditingIndex(null);
-      setEditText("");
+    setEditingIndex(null);
+    setEditText("");
 
-      const aiText = await startStreaming({
-        msgId,
-        content: editText,
-        isEdit: true,
-      });
-      if (aiText) {
-        addMessage(chatId, { role: "assistant", content: aiText });
-      }
-      setStreaming(false);
-    },
-    [
-      editText,
-      messages,
-      chatId,
-      deleteMessagesAfterIndex,
-      addMessage,
-      setStreaming,
-    ],
-  );
+    const aiText = await startStreaming({
+      msgId,
+      content: editText,
+      isEdit: true,
+    });
+    if (aiText) {
+      addMessage(chatId, { role: "assistant", content: aiText });
+    }
+    setStreaming(false);
+  };
+
   return {
     scrollRef,
     messagesEndRef,

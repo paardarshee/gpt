@@ -27,7 +27,7 @@ export interface ChatState {
   setRedirected: (value: boolean) => void;
   addMessage: (chatId: string, msg: Message) => void;
   getMessages: (chatId: string) => Message[];
-  deleteMessagesAfterIndex: (chatId: string, index: number) => void;
+  deleteMessagesFromIndex: (chatId: string, index: number) => void;
   addNewConversation: (chatId: string, messages: Message[]) => void;
 }
 
@@ -61,7 +61,7 @@ export const useChatStore = create<ChatState>((set) => ({
     const state: ChatState = useChatStore.getState();
     return state.conversations[chatId] || [];
   },
-  deleteMessagesAfterIndex: (chatId, index) =>
+  deleteMessagesFromIndex: (chatId, index) =>
     set((state) => {
       const msgs = state.conversations[chatId] || [];
       if (index < 0 || index >= msgs.length) return state;
